@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Easing, Image, StyleSheet, Text } from 'react-native';
+import { Animated, Easing, Image, StyleSheet, Text, useWindowDimensions } from 'react-native';
 import { useFonts, Orbitron_600SemiBold } from '@expo-google-fonts/orbitron';
 
 interface SplashScreenProps {
@@ -11,6 +11,24 @@ interface SplashScreenProps {
 const WHITE = '#FFFFFF';
 const AZURE = '#007FFF'; // Azure blue — brand highlight in the wordmark
 
+/** Breathing room kept either side of the wordmark. */
+const SIDE_PADDING = 24;
+// Same model as the Home and welcome headers: Orbitron glyphs advance roughly
+// 0.72em, so the wordmark needs about `length * 0.72 * fontSize`. Unlike those,
+// this one is centred with no room to shrink into, so a fixed 30px put
+// "JubileePraise.com" within a few points of the screen edge at 360dp and wrapped
+// ".com" onto a second line below that.
+const WORDMARK_WIDTH_EM = 'JubileePraise.com'.length * 0.72;
+const WORDMARK_MAX = 30;
+const WORDMARK_MIN = 18;
+
+/** Wordmark size that keeps the whole name on one line at this width. */
+const wordmarkFontSize = (screenWidth: number): number =>
+  Math.max(
+    WORDMARK_MIN,
+    Math.min(WORDMARK_MAX, Math.floor((screenWidth - SIDE_PADDING * 2) / WORDMARK_WIDTH_EM)),
+  );
+
 /**
  * Netflix-style intro splash: the JubileePraise logo and "JubileePraise.com" wordmark
  * (Orbitron brand font) settle in (scale + fade), hold, then zoom toward the
@@ -18,6 +36,8 @@ const AZURE = '#007FFF'; // Azure blue — brand highlight in the wordmark
  * (native driver) so it runs in Expo Go.
  */
 export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
+  const { width } = useWindowDimensions();
+  const wordmarkSize = wordmarkFontSize(width);
   const scale = useRef(new Animated.Value(1.25)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const overlayOpacity = useRef(new Animated.Value(1)).current;
@@ -91,7 +111,11 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
           resizeMode="contain"
         />
         {ready ? (
-          <Text style={styles.wordmark} allowFontScaling={false}>
+          <Text
+            style={[styles.wordmark, { fontSize: wordmarkSize }]}
+            allowFontScaling={false}
+            numberOfLines={1}
+          >
             <Text style={styles.white}>Jubilee</Text>
             <Text style={styles.azure}>Praise</Text>
             <Text style={styles.white}>.com</Text>
@@ -116,7 +140,7 @@ const styles = StyleSheet.create({
   // Android drop the custom font and fall back to the system sans-serif).
   wordmark: {
     fontFamily: 'Orbitron_600SemiBold',
-    fontSize: 30,
+    // fontSize comes from `wordmarkFontSize` at render — see the group above.
     letterSpacing: 1,
     textShadowColor: 'rgba(0,127,255,0.35)',
     textShadowOffset: { width: 0, height: 0 },
