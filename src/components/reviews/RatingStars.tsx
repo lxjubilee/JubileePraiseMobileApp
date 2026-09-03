@@ -13,15 +13,16 @@ import { AppText } from '@/components/common';
 import { formatCount } from '@/utils';
 import { reviewsApi } from '@/services/reviews';
 import type { MyReview, RatingDistribution, ReviewSummary, ReviewTargetType } from '@/types';
-import { RATING_GOLD, StarRating, starRowMetrics, type StarSize } from './StarRating';
+import { RATING_AZURE, StarRating, starRowMetrics, type StarSize } from './StarRating';
 
 /**
  * Shared "double-duty" rating widget. Before a touch it shows the community
- * AVERAGE as a gold fractional readout; the moment a finger lands it flips to an
- * accent-blue whole-star INPUT that follows the finger, and on release commits
- * the rating inline (star-only upsert) with an optimistic update. The two states
- * never look alike (gold fraction + number vs. accent whole stars + label), which
- * is what kills the "is this a readout or an input?" ambiguity.
+ * AVERAGE as a fractional readout; the moment a finger lands it flips to a
+ * whole-star INPUT that follows the finger, and on release commits the rating
+ * inline (star-only upsert) with an optimistic update. Both states draw in the
+ * brand azure — the two never look alike because of the fill and the caption
+ * (fraction + number vs. whole stars + label), which is what kills the "is this
+ * a readout or an input?" ambiguity.
  *
  * It only handles the star score — written reviews (title/body) still go through
  * `ReviewComposer`, reached via a separate affordance on the host card.
@@ -195,7 +196,7 @@ export const RatingStars: React.FC<Props> = ({
 
   const gesture = Gesture.Exclusive(pan, tap);
 
-  // Stars are always rating-gold — the community average as a fractional fill and
+  // Stars are always rating-azure — the community average as a fractional fill and
   // the user's own rating as whole stars. The readout/input distinction is carried
   // by whole-vs-fractional fill + the label swap, not by colour.
   const rated = !!mine;
@@ -205,7 +206,7 @@ export const RatingStars: React.FC<Props> = ({
     : phase === 'committing' ? committedStars
     : rated ? mine!.stars
     : average ?? 0;
-  const starsColor = RATING_GOLD;
+  const starsColor = RATING_AZURE;
 
   const onAccessibilityAction = (e: AccessibilityActionEvent) => {
     const base = mine?.stars ?? Math.round(average ?? 0);

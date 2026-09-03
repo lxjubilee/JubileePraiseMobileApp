@@ -18,8 +18,8 @@ type Nav = NativeStackNavigationProp<PlaylistsStackParamList & RootStackParamLis
 const { width } = Dimensions.get('window');
 const CARD_W = (width - 48) / 2;
 
-// Brand yellow/gold used for the profile avatar.
-const AVATAR_YELLOW = '#ffbd59';
+// Brand azure blue used for the profile avatar.
+const AVATAR_AZURE = '#007FFF';
 
 export const ProfileScreen: React.FC = () => {
   const theme = useTheme();
@@ -66,7 +66,7 @@ export const ProfileScreen: React.FC = () => {
           <View
             style={[
               styles.avatar,
-              { backgroundColor: initials ? AVATAR_YELLOW : theme.colors.surface },
+              { backgroundColor: initials ? AVATAR_AZURE : theme.colors.surface },
             ]}
           >
             {initials ? (

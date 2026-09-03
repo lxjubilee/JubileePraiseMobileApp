@@ -5,8 +5,8 @@ import { userInitials } from '@/utils';
 import { AppText } from './AppText';
 import { IconButton } from './IconButton';
 
-// Brand yellow/gold, shared with the Profile avatar.
-const AVATAR_YELLOW = '#ffbd59';
+// Brand azure blue, shared with the Profile avatar.
+const AVATAR_AZURE = '#007FFF';
 
 interface ProfileButtonProps {
   onPress?: () => void;
@@ -38,7 +38,7 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ onPress, size = 32
           width: size,
           height: size,
           borderRadius: size / 2,
-          backgroundColor: AVATAR_YELLOW,
+          backgroundColor: AVATAR_AZURE,
         },
       ]}
     >

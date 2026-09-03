@@ -6,12 +6,12 @@ import { useTheme } from '@/context';
 /**
  * Star rating display + picker (RN port of the web `StarRating`).
  *  - Display mode (default): renders `value` (0..5, may be fractional) as a
- *    gold fill clipped to the exact percentage, so 4.8 reads as 4.8.
+ *    azure fill clipped to the exact percentage, so 4.8 reads as 4.8.
  *  - Interactive mode (onChange set): 5 tappable stars filled up to the choice.
  */
 
-/** Conventional rating gold — reads as "rating" on the dark theme. */
-export const RATING_GOLD = '#F6B01E';
+/** Brand azure blue — the star fill on the dark theme. */
+export const RATING_AZURE = '#007FFF';
 
 export type StarSize = 'sm' | 'md' | 'lg';
 export const STAR_PX: Record<StarSize, number> = { sm: 14, md: 20, lg: 34 };
@@ -31,14 +31,14 @@ interface Props {
   value: number;
   onChange?: (n: number) => void;
   size?: StarSize;
-  /** Fill color for filled stars. Defaults to the rating gold. */
+  /** Fill color for filled stars. Defaults to the rating azure. */
   color?: string;
 }
 
 export const StarRating: React.FC<Props> = ({ value, onChange, size = 'md', color }) => {
   const theme = useTheme();
   const { px, gap } = starRowMetrics(size);
-  const fillColor = color ?? RATING_GOLD;
+  const fillColor = color ?? RATING_AZURE;
   // Muted grey, not the near-invisible border colour — empty stars must stay
   // clearly visible against the dark card/background while reading as "unfilled".
   const emptyColor = theme.colors.iconMuted;
