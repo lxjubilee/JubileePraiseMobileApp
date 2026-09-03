@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import { AppText } from '@/components/common';
 import { useTheme } from '@/context';
 import { AUTH_BORDER, AUTH_METRICS } from './authStyles';
@@ -9,27 +9,35 @@ interface AccountChipProps {
   /** "Use a different email" — returns to the email step. */
   actionLabel: string;
   onAction: () => void;
+  /** Lets the step own the gap above the chip, which differs per mode. */
+  style?: StyleProp<ViewStyle>;
 }
 
 /**
  * The locked-in email plus its escape hatch, shown once the door knows which
  * kind of account it is dealing with.
  *
- * The email is middle-ellipsised rather than character-wrapped (the web uses
- * `word-break: break-all`) — on a 360dp screen breaking mid-word makes an
- * address unreadable, while a middle ellipsis keeps the local part and the
- * domain, which is what the user checks.
+ * The email holds a single line, middle-ellipsised rather than character-wrapped
+ * (the web uses `word-break: break-all`) — on a 360dp screen breaking mid-word
+ * makes an address unreadable, while a middle ellipsis keeps the local part and
+ * the domain, which is what the user checks. A second line was allowed here
+ * before; it made the chip grow while the action beside it stayed centred.
  */
-export const AccountChip: React.FC<AccountChipProps> = ({ email, actionLabel, onAction }) => {
+export const AccountChip: React.FC<AccountChipProps> = ({
+  email,
+  actionLabel,
+  onAction,
+  style,
+}) => {
   const theme = useTheme();
 
   return (
-    <View style={styles.chip}>
+    <View style={[styles.chip, style]}>
       <AppText
         variant="bodySm"
         color="textSecondary"
         style={styles.email}
-        numberOfLines={2}
+        numberOfLines={1}
         ellipsizeMode="middle"
       >
         {email}

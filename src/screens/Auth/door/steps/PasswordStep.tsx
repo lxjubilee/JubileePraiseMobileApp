@@ -73,10 +73,13 @@ export const PasswordStep: React.FC<PasswordStepProps> = ({
         </AppText>
       ) : null}
 
+      {/* `confirm` already has the subtitle's 18px below it; `welcome` goes
+          straight from the title, so it needs the gap of its own. */}
       <AccountChip
         email={email}
         actionLabel={t('auth.door.account.useDifferentEmail')}
         onAction={onUseDifferentEmail}
+        style={mode === 'welcome' ? styles.account : undefined}
       />
 
       <AuthTextField
@@ -131,6 +134,7 @@ export const PasswordStep: React.FC<PasswordStepProps> = ({
 
 const styles = StyleSheet.create({
   subtitle: { marginTop: 10, marginBottom: 18, lineHeight: 20 },
+  account: { marginTop: 18 },
   field: { marginTop: 18 },
   remember: { marginTop: 14 },
   captcha: { marginTop: 14 },
