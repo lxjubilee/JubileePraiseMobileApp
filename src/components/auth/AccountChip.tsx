@@ -65,6 +65,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
+    // Same metric the text fields use, so the chip and the password box below
+    // it stand the same height instead of the chip sitting 12px shorter.
+    // `minHeight`, like the fields, so large dynamic type can still grow it.
+    minHeight: AUTH_METRICS.fieldHeight,
     borderWidth: 1,
     borderColor: AUTH_BORDER.idle,
     borderRadius: AUTH_METRICS.radius,
