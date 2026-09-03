@@ -257,7 +257,8 @@ const styles = StyleSheet.create({
   body: { alignItems: 'center', marginTop: 40, paddingHorizontal: 24 },
   avatar: { width: 110, height: 110, borderRadius: 55, alignItems: 'center', justifyContent: 'center' },
   avatarInitial: {
-    color: '#0B0B0F',
+    // White on the azure disc, matching the header avatar.
+    color: '#FFFFFF',
     fontSize: 46,
     lineHeight: 54,
     fontWeight: '700',

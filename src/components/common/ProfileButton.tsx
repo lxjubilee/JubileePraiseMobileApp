@@ -55,5 +55,7 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ onPress, size = 32
 
 const styles = StyleSheet.create({
   avatar: { alignItems: 'center', justifyContent: 'center' },
-  text: { color: '#0B0B0F', fontWeight: '700' },
+  // White on the azure disc: it reads cleanly where the header sits over
+  // blurred artwork, which near-black did not.
+  text: { color: '#FFFFFF', fontWeight: '700' },
 });
