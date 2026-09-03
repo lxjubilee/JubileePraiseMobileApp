@@ -83,7 +83,7 @@ export const CreateJubileeIdStep: React.FC<CreateJubileeIdStepProps> = ({
   return (
     <>
       <AppText variant="bodySm" color="textSecondary" style={styles.subtitle}>
-        {t('auth.door.create.subtitle', { site: 'JubileePraise' })}
+        {t('auth.door.create.subtitle', { site: 'Jubilee Praise' })}
       </AppText>
 
       <View style={styles.nameRow}>

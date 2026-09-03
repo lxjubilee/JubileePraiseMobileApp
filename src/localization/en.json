@@ -55,8 +55,8 @@
   "update": {
     "title": "Update available",
     "requiredTitle": "Update required",
-    "message": "A new version of JubileePraise is available. Update for the latest features and improvements.",
-    "requiredMessage": "A new version of JubileePraise is required to continue. Please update to keep using the app.",
+    "message": "A new version of Jubilee Praise is available. Update for the latest features and improvements.",
+    "requiredMessage": "A new version of Jubilee Praise is required to continue. Please update to keep using the app.",
     "update": "Update",
     "later": "Later",
     "currentVersion": "Current version",
@@ -160,13 +160,13 @@
       "password": "Password",
       "submit": "Sign In",
       "forgot": "Forgot password?",
-      "newPrompt": "New to JubileePraise? ",
+      "newPrompt": "New to Jubilee Praise? ",
       "signUp": "Sign up",
       "botNotice": "This page is protected to ensure you're not a bot."
     },
     "signup": {
       "title": "Create your account",
-      "subtitle": "Join JubileePraise to save your music, build playlists, and listen anywhere.",
+      "subtitle": "Join Jubilee Praise to save your music, build playlists, and listen anywhere.",
       "firstName": "First name",
       "lastName": "Last name",
       "dateOfBirth": "Date of birth",

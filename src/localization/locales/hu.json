@@ -132,13 +132,13 @@
       "password": "Jelszó",
       "submit": "Bejelentkezés",
       "forgot": "Elfelejtetted a jelszót?",
-      "newPrompt": "Új vagy a JubileePraise-on? ",
+      "newPrompt": "Új vagy a Jubilee Praise-on? ",
       "signUp": "Regisztráció",
       "botNotice": "Ez az oldal védett, hogy megbizonyosodjunk arról, hogy nem vagy robot."
     },
     "signup": {
       "title": "Hozd létre a fiókodat",
-      "subtitle": "Csatlakozz a JubileePraise-hoz, hogy elmentsd a zenédet, lejátszási listákat hozz létre, és bárhol hallgass.",
+      "subtitle": "Csatlakozz a Jubilee Praise-hoz, hogy elmentsd a zenédet, lejátszási listákat hozz létre, és bárhol hallgass.",
       "firstName": "Keresztnév",
       "lastName": "Vezetéknév",
       "dateOfBirth": "Születési dátum",

@@ -132,13 +132,13 @@
       "password": "Passwort",
       "submit": "Anmelden",
       "forgot": "Passwort vergessen?",
-      "newPrompt": "Neu bei JubileePraise? ",
+      "newPrompt": "Neu bei Jubilee Praise? ",
       "signUp": "Registrieren",
       "botNotice": "Diese Seite ist geschützt, um sicherzustellen, dass du kein Bot bist."
     },
     "signup": {
       "title": "Konto erstellen",
-      "subtitle": "Tritt JubileePraise bei, um deine Musik zu speichern, Playlists zu erstellen und überall zu hören.",
+      "subtitle": "Tritt Jubilee Praise bei, um deine Musik zu speichern, Playlists zu erstellen und überall zu hören.",
       "firstName": "Vorname",
       "lastName": "Nachname",
       "dateOfBirth": "Geburtsdatum",

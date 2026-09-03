@@ -33,7 +33,7 @@ const SLIDES: Slide[] = [
   {
     key: 'only',
     visual: { type: 'collage' },
-    headline: 'Only on JubileePraise',
+    headline: 'Only on Jubilee Praise',
     subtitle: 'Thousands of songs, albums and artists — all in one place.',
   },
   {

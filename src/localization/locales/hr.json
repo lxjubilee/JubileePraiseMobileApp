@@ -132,13 +132,13 @@
       "password": "Lozinka",
       "submit": "Prijava",
       "forgot": "Zaboravljena lozinka?",
-      "newPrompt": "Nov na JubileePraise? ",
+      "newPrompt": "Nov na Jubilee Praise? ",
       "signUp": "Registracija",
       "botNotice": "Ova je stranica zaštićena kako bismo potvrdili da nisi bot."
     },
     "signup": {
       "title": "Izradi svoj račun",
-      "subtitle": "Pridruži se JubileePraise da spremaš glazbu, izrađuješ popise za reprodukciju i slušaš bilo gdje.",
+      "subtitle": "Pridruži se Jubilee Praise da spremaš glazbu, izrađuješ popise za reprodukciju i slušaš bilo gdje.",
       "firstName": "Ime",
       "lastName": "Prezime",
       "dateOfBirth": "Datum rođenja",

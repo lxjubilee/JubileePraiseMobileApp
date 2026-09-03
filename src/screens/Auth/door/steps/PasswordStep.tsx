@@ -69,7 +69,7 @@ export const PasswordStep: React.FC<PasswordStepProps> = ({
     <>
       {mode === 'confirm' ? (
         <AppText variant="bodySm" color="textSecondary" style={styles.subtitle}>
-          {t('auth.door.confirm.subtitle', { site: 'JubileePraise' })}
+          {t('auth.door.confirm.subtitle', { site: 'Jubilee Praise' })}
         </AppText>
       ) : null}
 

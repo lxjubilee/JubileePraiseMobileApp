@@ -36,7 +36,7 @@ export const PRIVACY_POLICY: LegalDocument = {
   effectiveDate: EFFECTIVE_DATE,
   contactEmail: 'privacy@jubileepraise.com',
   intro: [
-    `JubileePraise.com ("JubileePraise," "we," "us," or "our"), operated by Jubilee Software, Inc., provides a faith-centered music streaming and discovery experience. This Privacy Policy applies to the JubileePraise.com website and the services offered through it (the "Service"). By creating an account or using the Service, you agree to the practices described below.`,
+    `JubileePraise.com ("Jubilee Praise," "we," "us," or "our"), operated by Jubilee Software, Inc., provides a faith-centered music streaming and discovery experience. This Privacy Policy applies to the JubileePraise.com website and the services offered through it (the "Service"). By creating an account or using the Service, you agree to the practices described below.`,
   ],
   sections: [
     {
@@ -63,7 +63,7 @@ export const PRIVACY_POLICY: LegalDocument = {
         { type: 'subheading', text: 'Information from sign-in providers' },
         {
           type: 'paragraph',
-          text: 'If you choose to continue with JubileeInspire Single Sign-On (SSO), we receive basic profile information (such as your name and email address) from your JubileeInspire account so we can create or link your JubileePraise profile. Your JubileePraise and JubileeInspire accounts may be kept in sync as part of the Jubilee family of services.',
+          text: 'If you choose to continue with JubileeInspire Single Sign-On (SSO), we receive basic profile information (such as your name and email address) from your JubileeInspire account so we can create or link your Jubilee Praise profile. Your Jubilee Praise and JubileeInspire accounts may be kept in sync as part of the Jubilee family of services.',
         },
       ],
     },
@@ -126,7 +126,7 @@ export const PRIVACY_POLICY: LegalDocument = {
           items: [
             'Service providers. Vendors who process data on our behalf and under our instructions — for example our email delivery provider (SendGrid), security and content delivery (Cloudflare), and our hosting infrastructure.',
             'The Jubilee family of services. If you use JubileeInspire SSO, account information is shared with JubileeInspire to provide and synchronize your single sign-on.',
-            'Legal and safety. When we reasonably believe disclosure is required by law, legal process, or to protect the rights, property, or safety of our users, the public, or JubileePraise.',
+            'Legal and safety. When we reasonably believe disclosure is required by law, legal process, or to protect the rights, property, or safety of our users, the public, or Jubilee Praise.',
             'Business transfers. In connection with a merger, acquisition, or sale of assets, in which case we will continue to protect your information consistent with this policy.',
           ],
         },
@@ -214,7 +214,7 @@ export const TERMS_OF_USE: LegalDocument = {
   effectiveDate: EFFECTIVE_DATE,
   contactEmail: 'legal@jubileepraise.com',
   intro: [
-    `Welcome to JubileePraise.com. These Terms of Use ("Terms") are a legal agreement between you and Jubilee Software, Inc. ("JubileePraise," "we," "us," or "our") governing your access to and use of the JubileePraise.com website and the faith-centered music streaming and discovery services offered through it (the "Service"). Please also review our Privacy Policy, which explains how we handle your information and is incorporated into these Terms by reference.`,
+    `Welcome to JubileePraise.com. These Terms of Use ("Terms") are a legal agreement between you and Jubilee Software, Inc. ("Jubilee Praise," "we," "us," or "our") governing your access to and use of the JubileePraise.com website and the faith-centered music streaming and discovery services offered through it (the "Service"). Please also review our Privacy Policy, which explains how we handle your information and is incorporated into these Terms by reference.`,
   ],
   sections: [
     {
@@ -273,7 +273,7 @@ export const TERMS_OF_USE: LegalDocument = {
       blocks: [
         {
           type: 'paragraph',
-          text: `The Service lets you contribute content such as comments, star ratings, award nominations, and playlists ("User Content"). You retain ownership of your User Content, but by submitting it you grant JubileePraise a worldwide, royalty-free, non-exclusive license to host, store, display, reproduce, and use that content as needed to operate and improve the Service.`,
+          text: `The Service lets you contribute content such as comments, star ratings, award nominations, and playlists ("User Content"). You retain ownership of your User Content, but by submitting it you grant Jubilee Praise a worldwide, royalty-free, non-exclusive license to host, store, display, reproduce, and use that content as needed to operate and improve the Service.`,
         },
         { type: 'paragraph', text: 'You are solely responsible for your User Content, and you represent that:' },
         {
@@ -339,7 +339,7 @@ export const TERMS_OF_USE: LegalDocument = {
       blocks: [
         {
           type: 'paragraph',
-          text: 'To the fullest extent permitted by law, JubileePraise and its affiliates, officers, employees, artists, and licensors will not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of data, use, goodwill, or profits, arising out of or relating to your use of (or inability to use) the Service. Our total liability for any claim relating to the Service will not exceed one hundred U.S. dollars (US $100) or the amount you paid us, if any, in the twelve months before the claim, whichever is greater.',
+          text: 'To the fullest extent permitted by law, Jubilee Praise and its affiliates, officers, employees, artists, and licensors will not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of data, use, goodwill, or profits, arising out of or relating to your use of (or inability to use) the Service. Our total liability for any claim relating to the Service will not exceed one hundred U.S. dollars (US $100) or the amount you paid us, if any, in the twelve months before the claim, whichever is greater.',
         },
       ],
     },
@@ -348,7 +348,7 @@ export const TERMS_OF_USE: LegalDocument = {
       blocks: [
         {
           type: 'paragraph',
-          text: 'You agree to indemnify and hold harmless JubileePraise and its affiliates from any claims, damages, losses, and expenses (including reasonable legal fees) arising out of your use of the Service, your User Content, or your violation of these Terms or applicable law.',
+          text: 'You agree to indemnify and hold harmless Jubilee Praise and its affiliates from any claims, damages, losses, and expenses (including reasonable legal fees) arising out of your use of the Service, your User Content, or your violation of these Terms or applicable law.',
         },
       ],
     },

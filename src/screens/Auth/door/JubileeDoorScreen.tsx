@@ -426,7 +426,7 @@ export const JubileeDoorScreen: React.FC = () => {
     <AuthScreenShell
       onBack={goBack}
       backLabel={t('auth.door.a11y.back')}
-      title={t(titleKey[state.step], { site: 'JubileePraise' })}
+      title={t(titleKey[state.step], { site: 'Jubilee Praise' })}
       scrollRef={scrollRef}
     >
       <AuthBanner message={state.info} tone="info" />
