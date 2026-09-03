@@ -74,7 +74,7 @@ of Sign In or a blank screen.
 **Steps:**
 1. Launch and watch the splash.
 **Expected Result:** Logo scales/fades in with the "JubileePraise.com" wordmark
-("Jubi" white, "Lujah" gold `#ffbd59`, ".com"), holds, then zooms out to reveal the app.
+("Jubilee" white, "Praise" azure blue `#007FFF`, ".com"), holds, then zooms out to reveal the app.
 Text does not scale with OS font settings (`allowFontScaling={false}`).
 
 ---
