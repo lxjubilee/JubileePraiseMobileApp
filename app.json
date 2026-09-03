@@ -31,7 +31,7 @@
       "package": "com.jubileepraise.app",
       "adaptiveIcon": {
         "backgroundColor": "#000000",
-        "foregroundImage": "./assets/JubileePraise-App-Icon.png"
+        "foregroundImage": "./assets/JubileePraise-adaptive-foreground.png"
       },
       "permissions": [
         "android.permission.FOREGROUND_SERVICE",
