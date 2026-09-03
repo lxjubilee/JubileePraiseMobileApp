@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
-  Dimensions,
   FlatList,
+  LayoutChangeEvent,
   Modal,
   Pressable,
   StyleSheet,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -26,8 +27,11 @@ import { toggleSongLike } from '@/redux';
 import type { RootStackParamList } from '@/navigation/types';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
-const { width } = Dimensions.get('window');
-const ART = width - 48;
+
+/** Gutter either side of the cover. */
+const ART_GUTTER = 48;
+/** Breathing room kept above and below the cover inside its slot. */
+const ART_VERTICAL_SLACK = 16;
 
 export const MusicPlayerScreen: React.FC = () => {
   const theme = useTheme();
@@ -55,6 +59,14 @@ export const MusicPlayerScreen: React.FC = () => {
   const isFavorite = useIsSongLiked(currentTrack ?? { albumId: '', trackNumber: undefined });
   const [queueOpen, setQueueOpen] = useState(false);
   const [optionsOpen, setOptionsOpen] = useState(false);
+  // The cover is square, so it is bounded by whichever of the two runs out
+  // first. Width alone used to decide it, which overflowed the flex slot on
+  // short screens and painted the image over the title row beneath it.
+  const { width } = useWindowDimensions();
+  const [artSlot, setArtSlot] = useState(0);
+  const onArtSlotLayout = (e: LayoutChangeEvent) =>
+    setArtSlot(Math.floor(e.nativeEvent.layout.height));
+  const art = artSlot > 0 ? Math.max(0, Math.min(width - ART_GUTTER, artSlot - ART_VERTICAL_SLACK)) : 0;
 
   if (!currentTrack) {
     return (
@@ -122,12 +134,14 @@ export const MusicPlayerScreen: React.FC = () => {
         <IconButton name="ellipsis-horizontal" size={24} onPress={() => setOptionsOpen(true)} />
       </View>
 
-      <View style={styles.artWrap}>
-        <Artwork
-          uri={currentTrack.artwork}
-          style={[styles.art, { width: ART, height: ART, borderRadius: theme.radius.lg }]}
-          iconSize={Math.round(ART * 0.3)}
-        />
+      <View style={styles.artWrap} onLayout={onArtSlotLayout}>
+        {art > 0 ? (
+          <Artwork
+            uri={currentTrack.artwork}
+            style={[styles.art, { width: art, height: art, borderRadius: theme.radius.lg }]}
+            iconSize={Math.round(art * 0.3)}
+          />
+        ) : null}
       </View>
 
       <View style={[styles.body, { paddingBottom: 36 + insets.bottom }]}>
