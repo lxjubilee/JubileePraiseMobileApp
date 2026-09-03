@@ -76,7 +76,7 @@ per-song rating pill ("Your rating") and count.
 **Preconditions:** Composer open.
 **Steps:**
 1. Tap each of the 5 stars.
-**Expected Result:** Star selection updates 1–5; azure fill (`#007FFF`) reflects the value.
+**Expected Result:** Star selection updates 1–5; gold fill (`#F6B01E`) reflects the value.
 
 ---
 
@@ -85,7 +85,7 @@ per-song rating pill ("Your rating") and count.
 **Preconditions:** A target with a non-integer average (e.g. 4.8).
 **Steps:**
 1. View the summary stars.
-**Expected Result:** The average renders with a fractional azure fill clip (partial star).
+**Expected Result:** The average renders with a fractional gold fill clip (partial star).
 
 ---
 

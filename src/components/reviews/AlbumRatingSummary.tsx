@@ -9,7 +9,7 @@ import { RatingStars } from './RatingStars';
 
 /**
  * Album-page rating summary. The stars themselves are the rating input (the
- * shared `RatingStars` widget: azure average readout → tap/drag to rate), so
+ * shared `RatingStars` widget: gold average readout → tap/drag to rate), so
  * this card owns only the aggregate display + a "Write a review" entry
  * (which opens the full composer for title/body) and the link to all reviews.
  */
