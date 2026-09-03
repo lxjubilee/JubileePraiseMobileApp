@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import {
   Animated,
-  Dimensions,
   LayoutChangeEvent,
   Pressable,
   StyleSheet,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { Image } from 'expo-image';
@@ -14,8 +14,6 @@ import { StatusBar } from 'expo-status-bar';
 import { AppText, BrandLogo } from '@/components/common';
 import { PosterCollage } from './components/PosterCollage';
 import { MUSIC_HERO } from './musicImages';
-
-const { width: SCREEN_W } = Dimensions.get('window');
 
 interface WelcomeProps {
   /** Advance to the sign-in / get-started step. */
@@ -60,12 +58,41 @@ const SLIDES: Slide[] = [
 
 const ACCENT = '#007FFF'; // Azure blue accent
 
+/** Diameter of the circular brand logo in the top nav (BrandLogo's default). */
+const BRAND_LOGO = 28;
+/** Width "SIGN IN" occupies — 13px uppercase label with 1px letter-spacing. */
+const SIGN_IN_WIDTH = 58;
+/** Smallest allowed space between the wordmark and SIGN IN. */
+const BRAND_CLEARANCE = 14;
+
+// Same model as the Home header: Orbitron is a wide geometric face whose glyphs
+// advance roughly 0.72em, so the wordmark needs about `length * 0.72 * fontSize`.
+// "JubileePraise.com" is four glyphs longer than the name it replaced, and at a
+// fixed 22px it lost its ".com" to an ellipsis on 360dp phones. Deriving the size
+// from the room the row actually has keeps the whole wordmark on screen.
+const WORDMARK_WIDTH_EM = 'JubileePraise.com'.length * 0.72;
+const BRAND_FONT_MAX = 22;
+const BRAND_FONT_MIN = 15;
+
+/** Wordmark size that fits the space left beside the logo and SIGN IN. */
+const brandFontSize = (screenWidth: number): number => {
+  const free =
+    screenWidth -
+    36 - // `topNav` horizontal padding
+    (BRAND_LOGO + 8) - // logo plus its trailing margin
+    SIGN_IN_WIDTH -
+    BRAND_CLEARANCE;
+  return Math.max(BRAND_FONT_MIN, Math.min(BRAND_FONT_MAX, Math.floor(free / WORDMARK_WIDTH_EM)));
+};
+
 /**
  * First-launch welcome: a horizontal pager of slides, each with its own visual
  * (a featured poster, or the tilted poster collage) above its headline/subtitle.
  * Top nav, animated pagination dots, and the Get Started button stay fixed.
  */
 export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
+  const { width: SCREEN_W } = useWindowDimensions();
+  const brandSize = brandFontSize(SCREEN_W);
   const scrollX = useRef(new Animated.Value(0)).current;
   const [pagerH, setPagerH] = useState(0);
   const onPagerLayout = (e: LayoutChangeEvent) => setPagerH(e.nativeEvent.layout.height);
@@ -76,7 +103,9 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
 
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <View style={styles.topNav}>
-          <BrandLogo textStyle={styles.logo} />
+          {/* BrandLogo strips `color`/`fontWeight` — the wordmark spans set their
+              own colors and Orbitron encodes the weight. Size comes from the row. */}
+          <BrandLogo textStyle={[styles.logo, { fontSize: brandSize }]} />
           <View style={styles.navLinks}>
             <Pressable hitSlop={8} onPress={onGetStarted}>
               <AppText variant="label" style={styles.navLink}>
@@ -172,7 +201,8 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 8,
   },
-  logo: { color: ACCENT, fontSize: 22, fontWeight: '900', letterSpacing: 1 },
+  // fontSize comes from `brandFontSize` at render — see the top nav.
+  logo: { letterSpacing: 1 },
   navLinks: { flexDirection: 'row', alignItems: 'center', gap: 22 },
   navLink: { letterSpacing: 1 },
   pager: { flex: 1 },

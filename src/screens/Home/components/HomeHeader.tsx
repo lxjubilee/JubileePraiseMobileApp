@@ -32,7 +32,7 @@ const BRAND_LOGO = 34;
 /** Smallest allowed space between the wordmark and the language flag. */
 const BRAND_CLEARANCE = 14;
 
-// The wordmark is a fixed 13-glyph string in Orbitron, a wide geometric face
+// The wordmark is a fixed 17-glyph string in Orbitron, a wide geometric face
 // whose glyphs advance roughly 0.72em. Deriving the size from the width the row
 // actually has left keeps "JubileePraise.com" clear of the flag on narrow phones,
 // where a fixed 26px ran right up against it.
