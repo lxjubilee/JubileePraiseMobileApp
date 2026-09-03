@@ -38,9 +38,9 @@ entitlements. Point these at a JubileePraise backend when one exists.
 
 ## 3. EAS / Expo account
 
-- `expo.extra.eas.projectId` was **removed** — it pointed at Jubilujah's EAS project
-  (`7354f6a2-…`), so a build would have shipped into the wrong app. Run `eas init` to create
-  a fresh JubileePraise project.
+- `expo.extra.eas.projectId` is `edcfbf6f-…` — **done**. The inherited id pointed at
+  Jubilujah's EAS project (`7354f6a2-…`), so a build would have shipped into the wrong app;
+  it was dropped and `eas init` has since linked a fresh Jubilee Praise project.
 - `expo.owner` is still `gabeungureanu`. Change it if JubileePraise lives under a different
   Expo account/organisation.
 

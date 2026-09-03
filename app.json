@@ -44,10 +44,21 @@
           "action": "VIEW",
           "autoVerify": true,
           "data": [
-            { "scheme": "https", "host": "jubileepraise.com", "pathPrefix": "/album" },
-            { "scheme": "https", "host": "www.jubileepraise.com", "pathPrefix": "/album" }
+            {
+              "scheme": "https",
+              "host": "jubileepraise.com",
+              "pathPrefix": "/album"
+            },
+            {
+              "scheme": "https",
+              "host": "www.jubileepraise.com",
+              "pathPrefix": "/album"
+            }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -70,7 +81,10 @@
       "mobileConfigBaseUrl": "https://api.jubilujah.com",
       "appUpdatePrompt": false,
       "turnstileSiteKey": "0x4AAAAAADJah9FpwSaEzlLP",
-      "turnstileBaseUrl": "https://jubileeinspire.com"
+      "turnstileBaseUrl": "https://jubileeinspire.com",
+      "eas": {
+        "projectId": "edcfbf6f-0383-47c3-84ea-8d1175f73e06"
+      }
     },
     "owner": "gabeungureanu"
   }
