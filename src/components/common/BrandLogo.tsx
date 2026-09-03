@@ -15,7 +15,7 @@ import {
  * `accent` token the play CTAs use — see `theme/colors`).
  */
 const WHITE = '#FFFFFF';
-const BLUE = '#007FFF';
+const AZURE = '#007FFF'; // Azure blue — brand highlight in the wordmark
 
 interface BrandLogoProps {
   /** Diameter of the circular logo image. Defaults to 28. */
@@ -29,7 +29,7 @@ interface BrandLogoProps {
 /**
  * App wordmark: the circular JubileePraise logo followed by the "JubileePraise.com"
  * text in the Orbitron brand font (loaded in App.tsx, matching the web header)
- * — "Jubilee" + ".com" white, "Praise" blue.
+ * — "Jubilee" + ".com" white, "Praise" azure blue.
  *
  * Pass `textStyle` to control the size per header; `fontWeight` and `color`
  * from it are stripped because the Orbitron_600SemiBold family already encodes
@@ -49,7 +49,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 28, textStyle, styl
       />
       <Text allowFontScaling={false} numberOfLines={1} style={[textRest, styles.wordmark]}>
         <Text style={styles.white}>Jubilee</Text>
-        <Text style={styles.blue}>Praise</Text>
+        <Text style={styles.azure}>Praise</Text>
         <Text style={styles.white}>.com</Text>
       </Text>
     </View>
@@ -65,5 +65,5 @@ const styles = StyleSheet.create({
   // Android drop the custom font and fall back to the system sans-serif).
   wordmark: { fontFamily: 'Orbitron_600SemiBold', flexShrink: 1 },
   white: { color: WHITE },
-  blue: { color: BLUE },
+  azure: { color: AZURE },
 });

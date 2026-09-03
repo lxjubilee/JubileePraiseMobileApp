@@ -7,9 +7,9 @@ interface SplashScreenProps {
   onFinish: () => void;
 }
 
-/** Wordmark span colors — "Jubilee" + ".com" white, "Praise" blue (matches header). */
+/** Wordmark span colors — "Jubilee" + ".com" white, "Praise" azure blue (matches header). */
 const WHITE = '#FFFFFF';
-const BLUE = '#007FFF';
+const AZURE = '#007FFF'; // Azure blue — brand highlight in the wordmark
 
 /**
  * Netflix-style intro splash: the JubileePraise logo and "JubileePraise.com" wordmark
@@ -93,7 +93,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
         {ready ? (
           <Text style={styles.wordmark} allowFontScaling={false}>
             <Text style={styles.white}>Jubilee</Text>
-            <Text style={styles.blue}>Praise</Text>
+            <Text style={styles.azure}>Praise</Text>
             <Text style={styles.white}>.com</Text>
           </Text>
         ) : null}
@@ -123,5 +123,5 @@ const styles = StyleSheet.create({
     textShadowRadius: 18,
   },
   white: { color: WHITE },
-  blue: { color: BLUE },
+  azure: { color: AZURE },
 });
