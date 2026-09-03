@@ -56,7 +56,7 @@ Sign-in goes straight to Home.
 **Preconditions:** Prod config (`DATA_SOURCE='manifest'`).
 **Steps:**
 1. Confirm which data source is active.
-**Expected Result:** The app uses `manifest` + jubileepraise-api; `ApiDataSource` (jubileeverse
+**Expected Result:** The app uses `manifest` + jubilujah-api; `ApiDataSource` (jubileeverse
 `/v1`) is contract-compatible but inactive. `setAuthToken` for that client is dead code
 (never called), so that client is effectively anonymous.
 

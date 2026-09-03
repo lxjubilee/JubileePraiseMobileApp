@@ -1,31 +1,40 @@
 # JubileePraise — setup TODOs
 
 This project was created by cloning **JubilujahMobileApp** (`D:\Projects Data\JubilujahMobileApp`,
-`main` @ `77a9bf4`, v2.0.14) and rebranding it. Every `Jubilujah`/`JubiLujah`/`jubilujah` token
-became `JubileePraise`/`jubileepraise`.
+`main` @ `77a9bf4`, v2.0.14) and rebranding it — with the CDN and API hosts kept on Jubilujah.
 
-The values below were **derived from the name as placeholders** or **inherited from Jubilujah**.
-They compile and typecheck, but they are not verified against any real JubileePraise
-infrastructure. Confirm each one before the first real build.
+The split is deliberate: **app identity is JubileePraise** (name, slug, scheme, bundle id,
+local storage keys) while **the CDN and API stay Jubilujah's**, so the app runs against a real
+backend today. Website-facing values — the share/deep-link domain and the legal contact
+addresses — were renamed to jubileepraise.com and have no site behind them yet.
+
+Confirm each item below before the first real build.
 
 ## 1. Backend endpoints — `app.json` → `expo.extra`
 
-| Key | Current value | Status |
-|---|---|---|
-| `cdnBaseUrl` | `https://cd.jubileepraise.com` | **Placeholder** — derived from name; domain may not exist |
-| `authBaseUrl` | `https://api.jubileepraise.com` | **Placeholder** — derived from name; domain may not exist |
-| `mobileConfigBaseUrl` | `https://api.jubileepraise.com` | **Placeholder** — derived from name |
-| `apiBaseUrl` | `https://api.jubileeverse.com/v1` | **Inherited unchanged** — this is the shared *Jubileeverse* platform API, not a Jubilujah-specific host. Confirm JubileePraise reads the same catalog API |
-| `useMock` / `dataSource` | `false` / `manifest` | Inherited. Set `dataSource: "mock"` to run fully offline against bundled JSON until the real backend exists |
+**JubileePraise deliberately runs against Jubilujah's live CDN and API.** These are not
+placeholders — do not "fix" them to jubileepraise.com hosts without a backend to point at.
 
-Same fallback defaults are duplicated in [src/constants/env.ts](src/constants/env.ts) — update both.
+| Key | Value | Notes |
+|---|---|---|
+| `cdnBaseUrl` | `https://cd.jubilujah.com` | Jubilujah CDN — all media (audio, artwork) |
+| `authBaseUrl` | `https://api.jubilujah.com` | Jubilujah unified `jubilujah-api` — every `/api/auth/*` call |
+| `mobileConfigBaseUrl` | `https://api.jubilujah.com` | Same host; dynamic mobile CMS config |
+| `apiBaseUrl` | `https://api.jubileeverse.com/v1` | Shared *Jubileeverse* platform API |
+| `useMock` / `dataSource` | `false` / `manifest` | Reads the live catalog manifest. Set `dataSource: "mock"` to run offline against bundled JSON |
+
+The same values are duplicated as fallback defaults in [src/constants/env.ts](src/constants/env.ts)
+(used only when `extra` is missing a key) — keep both in step.
+
+Because the backend is Jubilujah's, JubileePraise sees Jubilujah's catalog, accounts and
+entitlements. Point these at a JubileePraise backend when one exists.
 
 ## 2. Cloudflare Turnstile (sign-in CAPTCHA)
 
-| Key | Current value | Status |
+| Key | Value | Notes |
 |---|---|---|
-| `turnstileSiteKey` | `0x4AAAAAADJah9FpwSaEzlLP` | **Inherited from Jubilujah** — a Turnstile key is bound to allow-listed origins, so this will fail for JubileePraise. Issue a new key, or set to `""` to disable the CAPTCHA |
-| `turnstileBaseUrl` | `https://jubileeinspire.com` | **Inherited** — sibling brand, deliberately not renamed. Confirm |
+| `turnstileSiteKey` | `0x4AAAAAADJah9FpwSaEzlLP` | Jubilujah's key — **correct**, since auth runs against Jubilujah's API. Set to `""` to disable the CAPTCHA |
+| `turnstileBaseUrl` | `https://jubileeinspire.com` | Origin the widget runs under, allow-listed for that key |
 
 ## 3. EAS / Expo account
 
@@ -50,6 +59,14 @@ to verify, the web team must host, per [docs/deep-linking/](docs/deep-linking/):
   **Team ID** (currently the literal `TEAMID.com.jubileepraise.app`)
 - `https://jubileepraise.com/.well-known/assetlinks.json` — needs the release keystore's
   **SHA-256 fingerprint**
+
+**Live mismatch to be aware of:** share links are built for `jubileepraise.com`
+([src/services/share/shareLinks.ts](src/services/share/shareLinks.ts), `WEB_HOST`;
+also `WEB_ORIGIN` in [src/services/playlists/mappers.ts](src/services/playlists/mappers.ts)
+and the prefixes in [src/navigation/linking.ts](src/navigation/linking.ts)), but the content
+they point at lives in Jubilujah's catalog. Until jubileepraise.com is serving album pages,
+a shared link resolves to nothing outside the app. Either stand that site up, or switch
+those three constants to `jubilujah.com` to match the backend.
 
 ## 6. Assets — all placeholders
 

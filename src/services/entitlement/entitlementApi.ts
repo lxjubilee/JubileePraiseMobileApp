@@ -3,7 +3,7 @@ import type { Entitlement, EntitlementDto } from './types';
 
 /**
  * Thin client for the plan-entitlement endpoint (`/api/subscriptions/me` on
- * api.jubileepraise.com). Uses the shared `authClient`. Reports the signed-in user's
+ * api.jubilujah.com). Uses the shared `authClient`. Reports the signed-in user's
  * plan so the app is plan-aware after login; the per-track playback gate itself
  * is driven by the server-authoritative `/api/listening/intent` (see listeningApi).
  */

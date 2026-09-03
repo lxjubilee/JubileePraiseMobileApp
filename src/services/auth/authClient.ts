@@ -5,7 +5,7 @@ import type { ApiError } from '@/services/api';
 import { clearSessionCookies } from './cookieJar';
 
 /**
- * Axios instance for the unified jubileepraise-api (`API docs/API.md`). Bearer-token
+ * Axios instance for the unified jubilujah-api (`API docs/API.md`). Bearer-token
  * auth — the single host for every `/api/auth/*` call. Mirrors
  * services/api/client.ts: an in-memory bearer token + a normalized ApiError.
  * Adds transparent single-flight refresh on 401.

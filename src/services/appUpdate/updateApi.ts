@@ -6,7 +6,7 @@ import { logger } from '@/utils';
 import type { UpdateCheckResult } from './types';
 
 /**
- * Wire shape of GET /api/app-version/check (public endpoint on api.jubileepraise.com).
+ * Wire shape of GET /api/app-version/check (public endpoint on api.jubilujah.com).
  */
 interface UpdateCheckDto {
   update_available: boolean;

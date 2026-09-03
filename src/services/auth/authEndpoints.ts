@@ -17,7 +17,7 @@ import {
 } from './authDto';
 
 /**
- * Typed endpoint functions for the unified jubileepraise-api (`API docs/API.md`).
+ * Typed endpoint functions for the unified jubilujah-api (`API docs/API.md`).
  * The only place auth URLs are declared. Every call goes through `authClient`
  * (Bearer auth + transparent 401 refresh).
  */

@@ -255,7 +255,7 @@ birth **pre-filled from `profile`** and **no password field**.
 ### JLM-AUTH-023 — A failed lookup never advances the door
 **Category:** Negative, Integration · **Priority:** P0 · **Platform:** Both
 **Preconditions:** On the Jubilee Door with a valid email typed. Airplane mode, or block
-`api.jubileepraise.com`.
+`api.jubilujah.com`.
 **Steps:**
 1. Tap **Continue**.
 **Expected Result:** The door STAYS on the email step and shows "We are having trouble

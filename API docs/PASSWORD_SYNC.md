@@ -8,17 +8,17 @@ stays consistent.
 
 ## The mobile app's part (already done)
 
-- **Change password** → `POST https://api.jubileepraise.com/api/auth/change-password`
+- **Change password** → `POST https://api.jubilujah.com/api/auth/change-password`
   (`current_password`, `new_password`). See `src/services/auth/accountApi.ts` /
   `authService.ts`.
 - **Reset password** → the emailed link is redeemed on the website
-  (`jubileepraise.com/reset-password?token=…`); the app only requests it via
+  (`jubilujah.com/reset-password?token=…`); the app only requests it via
   `POST /api/auth/forgot-password`.
 
 That's the entire client responsibility. The app sends the new password to the
 JubileePraise backend and stops there.
 
-## The backend's part (api.jubileepraise.com — NOT this repo)
+## The backend's part (api.jubilujah.com — NOT this repo)
 
 Inside its `change-password` and `reset-password` handlers, right after the local
 JubileePraise DB is updated, the backend pushes the password to JI:

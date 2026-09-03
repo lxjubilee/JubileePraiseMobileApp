@@ -63,7 +63,7 @@ Expo Go but must be finally validated on a real build.
 
 **Backends** (configured in `app.json` → `expo.extra`):
 - CDN catalog manifest — `https://cdn.jubileeverse.com` (anonymous)
-- Unified jubileepraise-api — `https://api.jubileepraise.com` (Bearer JWT, powers auth,
+- Unified jubilujah-api — `https://api.jubilujah.com` (Bearer JWT, powers auth,
   likes, playlists, reviews, analytics, listening gate, entitlement, mobile config)
 - jubileeverse REST — `https://api.jubileeverse.com/v1` (`DATA_SOURCE='api'`, not used in prod)
 

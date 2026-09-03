@@ -4,7 +4,7 @@ import type { PlayIntent } from './types';
 
 /**
  * Thin client for the listening-entitlement gate (`/api/listening/*` on
- * api.jubileepraise.com). Uses the shared `authClient` (Bearer + transparent
+ * api.jubilujah.com). Uses the shared `authClient` (Bearer + transparent
  * 401-refresh), the same host as likes/reviews/analytics.
  *
  * `intent` is the server-authoritative, per-track check that mirrors the web

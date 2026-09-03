@@ -1,6 +1,6 @@
 /**
  * Wire shapes for the public reviews module (`/api/reviews/*` on
- * api.jubileepraise.com), snake_case exactly as the server sends. Kept separate
+ * api.jubilujah.com), snake_case exactly as the server sends. Kept separate
  * from the domain models in `types/models.ts`; `mappers.ts` bridges the two.
  */
 

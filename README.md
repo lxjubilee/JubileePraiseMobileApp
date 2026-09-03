@@ -1,7 +1,8 @@
 # JubileePraise
 
-> **New project.** Cloned from JubilujahMobileApp and rebranded. Several endpoints, keys and
-> assets are placeholders — see [SETUP-TODO.md](SETUP-TODO.md) before the first real build.
+> **New project.** Cloned from JubilujahMobileApp and rebranded. App identity is JubileePraise,
+> but the CDN and API deliberately stay on Jubilujah's hosts, so it runs against a live backend.
+> Artwork is still Jubilujah's — see [SETUP-TODO.md](SETUP-TODO.md) before the first real build.
 
 A premium music-streaming mobile app (React Native + Expo, TypeScript) with a Netflix-style
 experience — dark theme, edge-to-edge artwork, horizontally-scrolling rails, immersive detail

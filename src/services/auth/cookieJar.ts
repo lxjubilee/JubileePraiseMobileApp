@@ -3,7 +3,7 @@ import { CONFIG } from '@/constants';
 import { logger } from '@/utils';
 
 /**
- * Keeps the app a *pure Bearer client* against the unified jubileepraise-api.
+ * Keeps the app a *pure Bearer client* against the unified jubilujah-api.
  *
  * The API authenticates with JWT Bearer tokens, but it ALSO sets a `jv_session`
  * (and `jv_csrf`) cookie on signin/verify responses. React Native's native cookie

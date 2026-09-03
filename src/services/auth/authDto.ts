@@ -1,5 +1,5 @@
 /**
- * DTOs for the unified jubileepraise-api auth surface (`/api/auth/*`). See
+ * DTOs for the unified jubilujah-api auth surface (`/api/auth/*`). See
  * `API docs/API.md`. The API is Bearer-token based; responses carry tokens
  * directly (no cookies). Kept separate from the AuthUser domain model —
  * `authMappers.ts` adapts between them.

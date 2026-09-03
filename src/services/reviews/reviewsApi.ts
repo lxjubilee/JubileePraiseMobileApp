@@ -27,7 +27,7 @@ import {
 
 /**
  * Thin client for the public reviews API (`/api/reviews/*` on
- * api.jubileepraise.com). Uses the shared `authClient` (Bearer + transparent
+ * api.jubilujah.com). Uses the shared `authClient` (Bearer + transparent
  * 401-refresh) so the caller's own rating (`mine`) is populated when signed in.
  * Errors reject as the normalized `ApiError` from the client.
  */

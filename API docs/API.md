@@ -1,6 +1,6 @@
 # JubileePraise API Reference
 
-The JubileePraise API is an Express.js service (`jubileepraise-api`) that backs the Next.js
+The JubileePraise API is an Express.js service (`jubilujah-api`) that backs the Next.js
 web app. It exposes the music catalog, social features (ratings, comments, awards),
 the production pipeline, radio programming, personal playlists, account/auth flows,
 and server-to-server admin endpoints.
@@ -88,7 +88,7 @@ instruction — see the `/signin` row. Only 4xx/5xx are failures.
 
 | Method | Path | Auth | Description |
 |---|---|---|---|
-| GET | `/health` | — | DB + service health. `{ status: "healthy"\|"degraded", db: boolean, service: "jubileepraise-api" }` (503 when DB down). |
+| GET | `/health` | — | DB + service health. `{ status: "healthy"\|"degraded", db: boolean, service: "jubilujah-api" }` (503 when DB down). |
 | GET | `/api/openapi.json` | — | OpenAPI 3.1 spec. |
 
 ---

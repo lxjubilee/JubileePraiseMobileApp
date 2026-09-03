@@ -10,7 +10,7 @@ import type {
 
 /**
  * Thin client for the personal-playlist API (`/api/me/playlists*` on
- * api.jubileepraise.com). Uses the shared `authClient` (Bearer + transparent
+ * api.jubilujah.com). Uses the shared `authClient` (Bearer + transparent
  * 401-refresh). Errors reject as the normalized `ApiError` from the client.
  */
 

@@ -15,7 +15,7 @@ type AppExtra = {
   /** Explicit source selector; takes precedence over `useMock` when set. */
   dataSource: DataSourceKind;
   /**
-   * Unified jubileepraise-api host (Bearer-token auth). Owns ALL auth/account flows
+   * Unified jubilujah-api host (Bearer-token auth). Owns ALL auth/account flows
    * under `/api/auth/*`; in prod it delegates credential checks to JubileeInspire
    * server-side, so the client never talks to JI directly. See `API docs/API.md`.
    */
@@ -49,16 +49,16 @@ export const ENV = {
   USE_MOCK: useMock,
   // Backward-compatible: fall back to the old boolean when `dataSource` is unset.
   DATA_SOURCE: (extra.dataSource ?? (useMock ? 'mock' : 'api')) as DataSourceKind,
-  // Unified jubileepraise-api — single host for every /api/auth/* call (Bearer).
-  API_AUTH_BASE: extra.authBaseUrl ?? 'https://api.jubileepraise.com',
+  // Unified jubilujah-api — single host for every /api/auth/* call (Bearer).
+  API_AUTH_BASE: extra.authBaseUrl ?? 'https://api.jubilujah.com',
   // Host for the dynamic-content config ONLY. Defaults to the auth host so prod
   // is unchanged; override via extra.mobileConfigBaseUrl to test a local API.
-  MOBILE_CONFIG_BASE: extra.mobileConfigBaseUrl ?? extra.authBaseUrl ?? 'https://api.jubileepraise.com',
+  MOBILE_CONFIG_BASE: extra.mobileConfigBaseUrl ?? extra.authBaseUrl ?? 'https://api.jubilujah.com',
   // Host for the catalog MANIFEST ONLY (albums/artists/categories). Defaults to
   // the CDN so prod is unchanged; override via extra.catalogBaseUrl to browse a
   // locally-built catalog. Media still resolves against CDN_BASE_URL.
   CATALOG_BASE_URL: extra.catalogBaseUrl ?? extra.cdnBaseUrl ?? 'https://cdn.jubileeverse.com',
   // Cloudflare Turnstile (sign-in CAPTCHA). Empty disables the widget.
   TURNSTILE_SITE_KEY: extra.turnstileSiteKey ?? '',
-  TURNSTILE_BASE_URL: extra.turnstileBaseUrl ?? 'https://jubileepraise.com',
+  TURNSTILE_BASE_URL: extra.turnstileBaseUrl ?? 'https://jubilujah.com',
 } as const;

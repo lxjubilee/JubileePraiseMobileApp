@@ -1,5 +1,5 @@
 // Dynamic Expo config: starts from app.json. The app now talks only to the
-// unified jubileepraise-api over Bearer tokens, so there are no client-side secrets
+// unified jubilujah-api over Bearer tokens, so there are no client-side secrets
 // to inject (the old JI service-client credentials were removed — password sync
 // to JubileeInspire is a server-side concern). All config lives in app.json.
 //

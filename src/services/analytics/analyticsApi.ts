@@ -5,7 +5,7 @@ import type { PlayPayload } from './types';
 
 /**
  * Fire-and-forget client for the listening-analytics ingestion API
- * (`/api/analytics/*` on api.jubileepraise.com). Uses the shared `authClient`
+ * (`/api/analytics/*` on api.jubilujah.com). Uses the shared `authClient`
  * (Bearer + transparent 401-refresh), the same host as reviews/likes/playlists.
  * These calls feed the web admin analytics dashboard (plays, completion, skips,
  * active listeners); failures are swallowed so tracking never disrupts playback.
