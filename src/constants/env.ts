@@ -33,6 +33,12 @@ type AppExtra = {
    * this at a local web server to browse a locally-built catalog. Unset in prod.
    */
   catalogBaseUrl?: string;
+  /**
+   * Whether the "update available" popup may appear. Off for now: the version
+   * check is skipped entirely, so no request is made and nothing is shown.
+   * Set to `true` in app.json `extra` to turn the prompt back on.
+   */
+  appUpdatePrompt?: boolean;
   /** Cloudflare Turnstile site key for the sign-in CAPTCHA (empty = CAPTCHA off). */
   turnstileSiteKey: string;
   /** Origin the Turnstile widget runs under (must be allow-listed for the site key). */
@@ -58,6 +64,9 @@ export const ENV = {
   // the CDN so prod is unchanged; override via extra.catalogBaseUrl to browse a
   // locally-built catalog. Media still resolves against CDN_BASE_URL.
   CATALOG_BASE_URL: extra.catalogBaseUrl ?? extra.cdnBaseUrl ?? 'https://cdn.jubileeverse.com',
+  // "Update available" popup. Defaults ON so an unset config behaves as before;
+  // app.json currently sets it false.
+  APP_UPDATE_PROMPT: extra.appUpdatePrompt ?? true,
   // Cloudflare Turnstile (sign-in CAPTCHA). Empty disables the widget.
   TURNSTILE_SITE_KEY: extra.turnstileSiteKey ?? '',
   TURNSTILE_BASE_URL: extra.turnstileBaseUrl ?? 'https://jubilujah.com',

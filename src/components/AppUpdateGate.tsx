@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppText, ConfirmDialog } from '@/components/common';
+import { CONFIG } from '@/constants';
 import { checkForUpdate, type UpdateCheckResult } from '@/services/appUpdate';
 
 /**
@@ -10,6 +11,10 @@ import { checkForUpdate, type UpdateCheckResult } from '@/services/appUpdate';
  * available. An OPTIONAL update shows Later + Update and can be dismissed for
  * the session; a MANDATORY update shows only Update and its non-dismissible
  * backdrop blocks the app behind it until the user updates.
+ *
+ * Currently disabled: `CONFIG.APP_UPDATE_PROMPT` is false (app.json `extra`
+ * -> `appUpdatePrompt`), so the check never fires and nothing renders — a
+ * MANDATORY update cannot lock users out either. Flip that flag to restore it.
  */
 export const AppUpdateGate: React.FC<{ enabled: boolean }> = ({ enabled }) => {
   const { t } = useTranslation();
@@ -18,7 +23,7 @@ export const AppUpdateGate: React.FC<{ enabled: boolean }> = ({ enabled }) => {
   const checkedRef = useRef(false);
 
   useEffect(() => {
-    if (!enabled || checkedRef.current) return;
+    if (!CONFIG.APP_UPDATE_PROMPT || !enabled || checkedRef.current) return;
     checkedRef.current = true;
     let active = true;
     void checkForUpdate().then((r) => {
@@ -29,7 +34,7 @@ export const AppUpdateGate: React.FC<{ enabled: boolean }> = ({ enabled }) => {
     };
   }, [enabled]);
 
-  if (!result) return null;
+  if (!CONFIG.APP_UPDATE_PROMPT || !result) return null;
   if (dismissed && !result.mandatory) return null;
 
   const openStore = () => {

@@ -68,6 +68,7 @@
       "dataSource": "manifest",
       "authBaseUrl": "https://api.jubilujah.com",
       "mobileConfigBaseUrl": "https://api.jubilujah.com",
+      "appUpdatePrompt": false,
       "turnstileSiteKey": "0x4AAAAAADJah9FpwSaEzlLP",
       "turnstileBaseUrl": "https://jubileeinspire.com"
     },

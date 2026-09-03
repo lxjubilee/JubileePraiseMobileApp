@@ -12,6 +12,12 @@ export const CONFIG = {
   DATA_SOURCE: ENV.DATA_SOURCE,
   /** Unified jubilujah-api base URL — every /api/auth/* call (Bearer auth). */
   API_AUTH_BASE: ENV.API_AUTH_BASE,
+  /**
+   * Gates the "update available" popup. Currently `false` via app.json — the
+   * version check never runs and the dialog never mounts. Flip `appUpdatePrompt`
+   * in app.json `extra` to bring it back.
+   */
+  APP_UPDATE_PROMPT: ENV.APP_UPDATE_PROMPT,
   /** Cloudflare Turnstile site key for the sign-in CAPTCHA (empty = disabled). */
   TURNSTILE_SITE_KEY: ENV.TURNSTILE_SITE_KEY,
   /** Origin the Turnstile widget runs under (allow-listed for the site key). */

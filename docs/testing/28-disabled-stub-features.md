@@ -79,3 +79,18 @@ plaintext token in AsyncStorage.
 1. Follow an artist on device A; check device B.
 **Expected Result:** No sync (no backend follow endpoint); follows are local/persisted only.
 Documented limitation, not a bug.
+
+---
+
+### JLM-STUB-008 — "Update available" popup suppressed ⚠ DISABLED BY CONFIG
+**Category:** Functional, Regression · **Priority:** P2 · **Platform:** Both
+**Preconditions:** A build whose version is older than the latest published version, so the
+version check would normally report an update (optional *or* mandatory).
+**Steps:**
+1. Cold-launch the app and let the splash finish.
+2. Watch for the update dialog; inspect network traffic for `GET /api/app-version/check`.
+**Expected Result:** No dialog appears, for either an optional or a mandatory update, and the
+version-check request is never sent — `AppUpdateGate` returns before calling it. A mandatory
+update therefore cannot block the app. Controlled by `appUpdatePrompt: false` in app.json
+`extra` (surfaced as `CONFIG.APP_UPDATE_PROMPT`); set it to `true` to re-enable and re-test
+this as a real case.
