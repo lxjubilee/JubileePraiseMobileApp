@@ -3,7 +3,6 @@ import {
   Animated,
   Dimensions,
   LayoutChangeEvent,
-  Linking,
   Pressable,
   StyleSheet,
   View,
@@ -79,14 +78,6 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
         <View style={styles.topNav}>
           <BrandLogo textStyle={styles.logo} />
           <View style={styles.navLinks}>
-            <Pressable
-              hitSlop={8}
-              onPress={() => Linking.openURL('https://jubileepraise.com/privacy').catch(() => undefined)}
-            >
-              <AppText variant="label" color="textSecondary" style={styles.navLink}>
-                PRIVACY
-              </AppText>
-            </Pressable>
             <Pressable hitSlop={8} onPress={onGetStarted}>
               <AppText variant="label" style={styles.navLink}>
                 SIGN IN
