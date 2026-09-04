@@ -8,7 +8,7 @@
     "icon": "./assets/JubileePraise-App-Icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0B0B0F",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "splash": {
       "image": "./assets/JubileePraise-App-Icon.png",
       "backgroundColor": "#000000",
