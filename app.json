@@ -8,14 +8,14 @@
     "icon": "./assets/JubileePraise-App-Icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0B0B0F",
-    "newArchEnabled": false,
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/JubileePraise-App-Icon.png",
       "backgroundColor": "#000000",
       "resizeMode": "contain"
     },
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.jubileepraise.app",
       "associatedDomains": [
         "applinks:jubileepraise.com",
