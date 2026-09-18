@@ -75,11 +75,10 @@
     ],
     "extra": {
       "cdnBaseUrl": "https://cd.jubilujah.com",
-      "apiBaseUrl": "https://api.jubileeverse.com/v1",
       "useMock": false,
       "dataSource": "manifest",
-      "authBaseUrl": "https://api.jubilujah.com",
-      "mobileConfigBaseUrl": "https://api.jubilujah.com",
+      "authBaseUrl": "https://api.jubileepraise.com",
+      "mobileConfigBaseUrl": "https://api.jubileepraise.com",
       "appUpdatePrompt": false,
       "turnstileSiteKey": "0x4AAAAAADJah9FpwSaEzlLP",
       "turnstileBaseUrl": "https://jubileeinspire.com",

@@ -20,7 +20,7 @@ placeholders — do not "fix" them to jubileepraise.com hosts without a backend 
 | `cdnBaseUrl` | `https://cd.jubilujah.com` | Jubilujah CDN — all media (audio, artwork) |
 | `authBaseUrl` | `https://api.jubilujah.com` | Jubilujah unified `jubilujah-api` — every `/api/auth/*` call |
 | `mobileConfigBaseUrl` | `https://api.jubilujah.com` | Same host; dynamic mobile CMS config |
-| `apiBaseUrl` | `https://api.jubileeverse.com/v1` | Shared *Jubileeverse* platform API |
+| `apiBaseUrl` | *(not set)* | Only read when `dataSource: "api"`; falls back to `https://api.jubileeverse.com/v1` in `env.ts` |
 | `useMock` / `dataSource` | `false` / `manifest` | Reads the live catalog manifest. Set `dataSource: "mock"` to run offline against bundled JSON |
 
 The same values are duplicated as fallback defaults in [src/constants/env.ts](src/constants/env.ts)
