@@ -11,7 +11,7 @@ import {
   fetchPlaylists,
   toggleSongLike,
 } from '@/redux';
-import { useIsSongLiked } from '@/hooks';
+import { useIsSongLiked, useRequireAuth } from '@/hooks';
 import { TrackOptionsModal, TrackOption } from '@/components/modals';
 import { PlaylistPickerSheet } from './PlaylistPickerSheet';
 import { PlaylistNameDialog } from './PlaylistNameDialog';
@@ -63,10 +63,16 @@ export const PlaylistMenuProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [pickerTracks, setPickerTracks] = useState<Track[] | null>(null);
   const [namingTracks, setNamingTracks] = useState<Track[] | null>(null);
 
-  const addToPlaylist = useCallback((track: Track) => setPickerTracks([track]), []);
+  // Playlists belong to an account: a guest is asked to sign in instead.
+  const requireAuth = useRequireAuth();
+  const addToPlaylist = useCallback(
+    (track: Track) => requireAuth('playlist') && setPickerTracks([track]),
+    [requireAuth],
+  );
   const addAlbumToPlaylistMenu = useCallback(
-    (tracks: Track[]) => (tracks.length ? setPickerTracks(tracks) : undefined),
-    [],
+    (tracks: Track[]) =>
+      tracks.length && requireAuth('playlist') ? setPickerTracks(tracks) : undefined,
+    [requireAuth],
   );
   const openTrackOptions = useCallback((track: Track) => setOptionsTrack(track), []);
 
@@ -102,7 +108,7 @@ export const PlaylistMenuProvider: React.FC<{ children: React.ReactNode }> = ({ 
       key: 'addToPlaylist',
       label: t('playlist.addToPlaylist'),
       icon: 'add-circle-outline',
-      onPress: (track) => handoff(() => setPickerTracks([track])),
+      onPress: (track) => requireAuth('playlist') && handoff(() => setPickerTracks([track])),
     },
   ];
 

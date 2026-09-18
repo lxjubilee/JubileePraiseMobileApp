@@ -108,7 +108,7 @@ export const ProfileScreen: React.FC = () => {
         </View>
 
         {/* Rating & review activity (mirrors the web account "My Contributions"). */}
-        <MyContributions />
+        {user ? <MyContributions /> : null}
 
         {/* Saved albums, also relocated from the Library screen. Laid out as a
             wrapping row rather than a FlatList — nesting a virtualized list in
@@ -137,11 +137,13 @@ export const ProfileScreen: React.FC = () => {
 
         {/* Account options. */}
         <View style={styles.menu}>
-          <Row
-            icon="lock-closed-outline"
-            label={t('profile.changePassword')}
-            onPress={() => navigation.navigate('ChangePassword')}
-          />
+          {user ? (
+            <Row
+              icon="lock-closed-outline"
+              label={t('profile.changePassword')}
+              onPress={() => navigation.navigate('ChangePassword')}
+            />
+          ) : null}
           <Row
             icon="shield-checkmark-outline"
             label={t('profile.privacyPolicy')}
@@ -152,16 +154,27 @@ export const ProfileScreen: React.FC = () => {
             label={t('profile.termsOfUse')}
             onPress={() => navigation.navigate('TermsOfUse')}
           />
-          <Row icon="trash-outline" label={t('profile.deleteAccount')} destructive onPress={openDeleteConfirm} />
+          {user ? (
+            <Row icon="trash-outline" label={t('profile.deleteAccount')} destructive onPress={openDeleteConfirm} />
+          ) : null}
         </View>
 
-        <Button
-          label={t('profile.signOut')}
-          icon="log-out-outline"
-          variant="ghost"
-          onPress={() => dispatch(signOut())}
-          style={styles.cta}
-        />
+        {user ? (
+          <Button
+            label={t('profile.signOut')}
+            icon="log-out-outline"
+            variant="ghost"
+            onPress={() => dispatch(signOut())}
+            style={styles.cta}
+          />
+        ) : (
+          <Button
+            label={t('auth.prompt.signIn')}
+            icon="log-in-outline"
+            onPress={() => navigation.navigate('JubileeDoor')}
+            style={styles.cta}
+          />
+        )}
       </ScrollView>
 
       <ConfirmDialog

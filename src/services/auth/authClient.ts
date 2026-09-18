@@ -176,7 +176,15 @@ authClient.interceptors.response.use(
       | undefined;
     const status = error.response?.status;
 
-    if (status === 401 && original && !original._retry && !isExempt(original.url) && handlers) {
+    // A guest holds no refresh token: there is no session to renew or end, so a
+    // 401 is just an error. Signing them "out" would also stop their playback.
+    if (
+      status === 401 &&
+      original &&
+      !original._retry &&
+      !isExempt(original.url) &&
+      handlers?.getRefreshToken()
+    ) {
       original._retry = true;
       const outcome = await refreshSession();
       if (outcome.result === 'ok') {

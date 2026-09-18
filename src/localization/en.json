@@ -106,7 +106,8 @@
     "empty": "Songs and albums you save will appear here.",
     "emptyLiked": "Songs you like will appear here. Tap the heart on any track to add it.",
     "emptyArtists": "Artists you follow will appear here. Tap follow on any artist to add them.",
-    "emptyPlaylists": "Playlists you create will appear here."
+    "emptyPlaylists": "Playlists you create will appear here.",
+    "signInPlaylists": "Sign in to create playlists and see them on all your devices."
   },
   "downloads": {
     "title": "Downloads",
@@ -318,6 +319,14 @@
         "openTerms": "Open Terms of Use",
         "openPrivacy": "Open Privacy Policy"
       }
+    },
+    "prompt": {
+      "title": "Sign in to continue",
+      "like": "Sign in to like songs and albums and keep them in your library.",
+      "rate": "Sign in to rate and review music.",
+      "playlist": "Sign in to create playlists and add songs to them.",
+      "signIn": "Sign In",
+      "notNow": "Not now"
     }
   },
   "errors": {

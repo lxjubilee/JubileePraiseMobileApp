@@ -4,7 +4,7 @@ import { useFocusEffect, useNavigation, useRoute, type RouteProp } from '@react-
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { AuthBanner, AuthScreenShell } from '@/components/auth';
-import { useAppDispatch } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { signIn, verify2FA, verifySignup } from '@/redux';
 import { authService, readAuthError, type LookupResponseDTO } from '@/services/auth';
 import { CONFIG } from '@/constants';
@@ -17,7 +17,7 @@ import {
   normalizeEmail,
   toIsoDate,
 } from '@/utils';
-import type { AuthStackParamList } from '@/navigation/types';
+import type { RootStackParamList } from '@/navigation/types';
 import { backTargetFor, doorReducer, initialDoorState } from './doorMachine';
 import { EmailStep } from './steps/EmailStep';
 import { PasswordStep } from './steps/PasswordStep';
@@ -25,8 +25,8 @@ import { CreateLinkedStep } from './steps/CreateLinkedStep';
 import { CreateJubileeIdStep } from './steps/CreateJubileeIdStep';
 import { CodeStep } from './steps/CodeStep';
 
-type Nav = NativeStackNavigationProp<AuthStackParamList, 'JubileeDoor'>;
-type Route = RouteProp<AuthStackParamList, 'JubileeDoor'>;
+type Nav = NativeStackNavigationProp<RootStackParamList, 'JubileeDoor'>;
+type Route = RouteProp<RootStackParamList, 'JubileeDoor'>;
 
 type Busy = null | 'lookup' | 'submit' | 'resend';
 
@@ -90,11 +90,23 @@ export const JubileeDoorScreen: React.FC = () => {
 
   // --- step transitions ------------------------------------------------------
 
+  /** Close the door, returning the user to wherever they opened it from. */
+  const leave = useCallback(() => {
+    if (navigation.canGoBack()) navigation.goBack();
+    else navigation.navigate('MainTabs', { screen: 'HomeTab' });
+  }, [navigation]);
+
+  // Signing in is optional, so the door is a screen on the main stack. Once any
+  // step (password, 2FA, sign-up code, provision) authenticates, step back out.
+  const authed = useAppSelector((s) => s.auth.user != null);
+  useEffect(() => {
+    if (authed) leave();
+  }, [authed, leave]);
+
   const goBack = useCallback(() => {
     const target = backTargetFor(state);
     if (!target) {
-      if (navigation.canGoBack()) navigation.goBack();
-      else navigation.navigate('Welcome');
+      leave();
       return;
     }
     Keyboard.dismiss();
@@ -107,7 +119,7 @@ export const JubileeDoorScreen: React.FC = () => {
       setCaptchaRetry(false);
     }
     send({ type: 'back' });
-  }, [navigation, state]);
+  }, [leave, state]);
 
   const useDifferentEmail = useCallback(() => {
     Keyboard.dismiss();
@@ -238,7 +250,7 @@ export const JubileeDoorScreen: React.FC = () => {
 
       switch (result.payload.kind) {
         case 'authenticated':
-          return; // RootGate swaps the navigator out from under us
+          return; // the sign-in effect closes the door
         case '2fa':
           setPassword('');
           return send({

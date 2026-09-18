@@ -4,7 +4,7 @@ import { likesApi, songLikeKey, type LikeType } from '@/services/likes';
 import { albumUuid, trackSongUuid } from '@/services/playlists';
 import type { AppDispatch } from '../store/store';
 import type { RootState } from '../store/rootReducer';
-import { clearSession, signOut } from './authSlice';
+import { clearSession, promptSignIn, signOut } from './authSlice';
 
 /**
  * Server-backed likes (`/api/me/likes`). `keys` is a set-like map of the
@@ -68,10 +68,15 @@ export default likesSlice.reducer;
 
 // --- Optimistic toggle thunks ------------------------------------------------
 // Flip local state immediately, hit the API, revert on failure (mirrors web).
+// Likes belong to an account, so a guest is asked to sign in instead.
 
 const toggleLike =
   (type: LikeType, uuid: string, key: string) =>
   async (dispatch: AppDispatch, getState: () => RootState): Promise<void> => {
+    if (!getState().auth.user) {
+      dispatch(promptSignIn('like'));
+      return;
+    }
     const was = !!getState().likes.keys[key];
     dispatch(setLikedLocal({ key, liked: !was }));
     try {

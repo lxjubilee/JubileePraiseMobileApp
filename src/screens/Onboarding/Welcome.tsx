@@ -16,8 +16,10 @@ import { PosterCollage } from './components/PosterCollage';
 import { MUSIC_HERO } from './musicImages';
 
 interface WelcomeProps {
-  /** Advance to the sign-in / get-started step. */
+  /** Leave the slides and open the app. */
   onGetStarted: () => void;
+  /** Open the Privacy Policy from the top nav. */
+  onPrivacy: () => void;
 }
 
 type SlideVisual = { type: 'collage' } | { type: 'poster'; image: string };
@@ -60,9 +62,9 @@ const ACCENT = '#007FFF'; // Azure blue accent
 
 /** Diameter of the circular brand logo in the top nav (BrandLogo's default). */
 const BRAND_LOGO = 28;
-/** Width "SIGN IN" occupies — 13px uppercase label with 1px letter-spacing. */
-const SIGN_IN_WIDTH = 58;
-/** Smallest allowed space between the wordmark and SIGN IN. */
+/** Width "PRIVACY" occupies — 13px uppercase label with 1px letter-spacing. */
+const NAV_LINK_WIDTH = 64;
+/** Smallest allowed space between the wordmark and PRIVACY. */
 const BRAND_CLEARANCE = 14;
 
 // Same model as the Home header: Orbitron is a wide geometric face whose glyphs
@@ -74,13 +76,13 @@ const WORDMARK_WIDTH_EM = 'JubileePraise.com'.length * 0.72;
 const BRAND_FONT_MAX = 22;
 const BRAND_FONT_MIN = 15;
 
-/** Wordmark size that fits the space left beside the logo and SIGN IN. */
+/** Wordmark size that fits the space left beside the logo and PRIVACY. */
 const brandFontSize = (screenWidth: number): number => {
   const free =
     screenWidth -
     36 - // `topNav` horizontal padding
     (BRAND_LOGO + 8) - // logo plus its trailing margin
-    SIGN_IN_WIDTH -
+    NAV_LINK_WIDTH -
     BRAND_CLEARANCE;
   return Math.max(BRAND_FONT_MIN, Math.min(BRAND_FONT_MAX, Math.floor(free / WORDMARK_WIDTH_EM)));
 };
@@ -90,7 +92,7 @@ const brandFontSize = (screenWidth: number): number => {
  * (a featured poster, or the tilted poster collage) above its headline/subtitle.
  * Top nav, animated pagination dots, and the Get Started button stay fixed.
  */
-export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
+export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted, onPrivacy }) => {
   const { width: SCREEN_W } = useWindowDimensions();
   const brandSize = brandFontSize(SCREEN_W);
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -107,9 +109,9 @@ export const Welcome: React.FC<WelcomeProps> = ({ onGetStarted }) => {
               own colors and Orbitron encodes the weight. Size comes from the row. */}
           <BrandLogo textStyle={[styles.logo, { fontSize: brandSize }]} />
           <View style={styles.navLinks}>
-            <Pressable hitSlop={8} onPress={onGetStarted}>
+            <Pressable hitSlop={8} onPress={onPrivacy}>
               <AppText variant="label" style={styles.navLink}>
-                SIGN IN
+                PRIVACY
               </AppText>
             </Pressable>
           </View>

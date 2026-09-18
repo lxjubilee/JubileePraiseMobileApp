@@ -11,6 +11,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useTranslation } from 'react-i18next';
 import { AppText } from '@/components/common';
 import { formatCount } from '@/utils';
+import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { reviewsApi } from '@/services/reviews';
 import type { MyReview, RatingDistribution, ReviewSummary, ReviewTargetType } from '@/types';
 import { RATING_GOLD, StarRating, starRowMetrics, type StarSize } from './StarRating';
@@ -98,6 +99,7 @@ export const RatingStars: React.FC<Props> = ({
   compact,
 }) => {
   const { t } = useTranslation();
+  const requireAuth = useRequireAuth();
   const isCompact = compact ?? size === 'sm';
 
   const average = summary?.average ?? null;
@@ -155,6 +157,9 @@ export const RatingStars: React.FC<Props> = ({
 
   const commit = (stars: number) => {
     if (!interactive || !targetId || committingRef.current) return;
+    // A guest's drag previews the stars, then asks them to sign in; the preview
+    // drops back to the average when the gesture finalizes.
+    if (!requireAuth('rate')) return;
     committingRef.current = true;
     const prev = summary;
     setCommittedStars(stars);

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/context';
 import { AppText, IconButton, Screen } from '@/components/common';
 import { AlbumRatingSummary, ReviewComposer, ReviewItem, StarRating } from '@/components/reviews';
-import { useReviews } from '@/hooks';
+import { useRequireAuth, useReviews } from '@/hooks';
 import { reviewsApi } from '@/services/reviews';
 import { albumUuid } from '@/services/playlists';
 import type { RatingDistribution, ReviewListItem, ReviewSort } from '@/types';
@@ -58,6 +58,7 @@ export const AlbumReviewsScreen: React.FC = () => {
   const id = useMemo(() => albumUuid(params.albumId), [params.albumId]);
 
   const { summary, applySummary } = useReviews(type, id);
+  const requireAuth = useRequireAuth();
   const [sort, setSort] = useState<ReviewSort>('recent');
   const [items, setItems] = useState<ReviewListItem[]>([]);
   const [page, setPage] = useState(1);
@@ -99,7 +100,7 @@ export const AlbumReviewsScreen: React.FC = () => {
         type={type}
         targetId={id}
         onApplySummary={applySummary}
-        onRate={() => setComposerOpen(true)}
+        onRate={() => requireAuth('rate') && setComposerOpen(true)}
       />
       {summary && summary.ratingCount > 0 ? (
         <DistributionBars distribution={summary.distribution} total={summary.ratingCount} />

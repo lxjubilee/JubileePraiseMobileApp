@@ -40,24 +40,30 @@ export type RootStackParamList = {
   PlaylistDetails: { playlistId: string };
   PlaylistAddSongs: { playlistId: string };
   MusicPlayer: undefined;
-};
+} & SignInStackParamList;
 
 /**
- * Unauthenticated flow: welcome slides → the Jubilee Door.
+ * The sign-in routes. They sit on the root stack so a guest can sign in from
+ * wherever they are (liking, rating, adding to a playlist) and land back there.
  *
  * Sign in, sign up, the 2FA challenge and the sign-up verification are all
  * steps INSIDE JubileeDoor rather than routes, so the flow cannot be entered
  * halfway through and the Turnstile WebView is never left mounted under a
  * pushed screen.
  */
-export type AuthStackParamList = {
-  Welcome: undefined;
+export type SignInStackParamList = {
   /** The email-first Jubilee Door. `email` pre-fills the first step. */
   JubileeDoor: { email?: string } | undefined;
   /** `email` pre-fills the field when the door hands off a typed address. */
   ForgotPassword: { email?: string } | undefined;
   PrivacyPolicy: undefined;
   TermsOfUse: undefined;
+};
+
+/** First-launch flow: the welcome slides, before the app opens (signed in or not). */
+export type AuthStackParamList = {
+  Welcome: undefined;
+  PrivacyPolicy: undefined;
 };
 
 /**

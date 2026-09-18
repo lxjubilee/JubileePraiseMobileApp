@@ -15,6 +15,7 @@ import {
   useAppSelector,
   useIsAlbumLiked,
   usePlayer,
+  useRequireAuth,
   useReviews,
   useSongSummaries,
   useVisibleAlbums,
@@ -85,6 +86,7 @@ export const AlbumDetailsScreen: React.FC = () => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const dispatch = useAppDispatch();
+  const requireAuth = useRequireAuth();
   const { playTracks, playFrom, currentTrack, isPlaying, toggle } = usePlayer();
   const { addToPlaylist, addAlbumToPlaylist } = usePlaylistMenu();
 
@@ -352,6 +354,7 @@ export const AlbumDetailsScreen: React.FC = () => {
           onApplySummary={applyAlbumSummary}
           onRate={() =>
             albumTargetId &&
+            requireAuth('rate') &&
             setComposer({
               type: 'album',
               targetId: albumTargetId,
@@ -390,6 +393,7 @@ export const AlbumDetailsScreen: React.FC = () => {
                       targetId={trackSongUuid(track)!}
                       onApplySummary={(s) => applySongSummary(track.id, s)}
                       onRate={() =>
+                        requireAuth('rate') &&
                         setComposer({
                           type: 'song',
                           targetId: trackSongUuid(track)!,

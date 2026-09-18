@@ -24,3 +24,4 @@ export {
 } from './useLikes';
 export { useTheme } from '@/context/ThemeProvider';
 export { useAppDispatch, useAppSelector } from '@/redux';
+export { useRequireAuth } from './useRequireAuth';

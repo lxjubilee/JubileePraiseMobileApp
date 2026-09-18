@@ -6,37 +6,37 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@/context';
 import { storage, STORAGE_KEYS } from '@/services/storage';
 import { Welcome } from '@/screens/Onboarding/Welcome';
-import { JubileeDoorScreen, ForgotPasswordScreen } from '@/screens/Auth';
-import { PrivacyPolicyScreen, TermsOfUseScreen } from '@/screens/Legal';
+import { PrivacyPolicyScreen } from '@/screens/Legal';
 import type { AuthStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 type WelcomeNav = NativeStackNavigationProp<AuthStackParamList, 'Welcome'>;
 
-/** Wraps the welcome slides: advancing marks onboarding done + opens the door. */
-const WelcomeRoute: React.FC = () => {
+interface AuthNavigatorProps {
+  /** Called once the user leaves the welcome slides; the app opens as a guest. */
+  onFinish: () => void;
+}
+
+/** Wraps the welcome slides: advancing marks onboarding done and opens the app. */
+const WelcomeRoute: React.FC<AuthNavigatorProps> = ({ onFinish }) => {
   const navigation = useNavigation<WelcomeNav>();
   return (
     <Welcome
       onGetStarted={() => {
         void storage.setItem(STORAGE_KEYS.ONBOARDING_DONE, true);
-        navigation.navigate('JubileeDoor');
+        onFinish();
       }}
+      onPrivacy={() => navigation.navigate('PrivacyPolicy')}
     />
   );
 };
 
-interface AuthNavigatorProps {
-  /** First-run starts at Welcome; returning/signed-out users at the door. */
-  initialRoute: 'Welcome' | 'JubileeDoor';
-}
-
 /**
- * Unauthenticated navigation stack. Rendered by App when the user isn't signed
- * in; its own NavigationContainer so it never coexists with the main app stack.
+ * First-launch navigation: the welcome slides and the policy they link to.
+ * Its own NavigationContainer so it never coexists with the main app stack.
  */
-export const AuthNavigator: React.FC<AuthNavigatorProps> = ({ initialRoute }) => {
+export const AuthNavigator: React.FC<AuthNavigatorProps> = ({ onFinish }) => {
   const theme = useTheme();
   const navTheme: NavTheme = {
     ...DarkTheme,
@@ -52,12 +52,9 @@ export const AuthNavigator: React.FC<AuthNavigatorProps> = ({ initialRoute }) =>
 
   return (
     <NavigationContainer theme={navTheme}>
-      <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Welcome" component={WelcomeRoute} />
-        <Stack.Screen name="JubileeDoor" component={JubileeDoorScreen} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Welcome">{() => <WelcomeRoute onFinish={onFinish} />}</Stack.Screen>
         <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
-        <Stack.Screen name="TermsOfUse" component={TermsOfUseScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

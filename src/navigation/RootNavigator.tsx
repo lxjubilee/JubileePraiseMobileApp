@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  NavigationContainer,
-  DarkTheme,
-  Theme as NavTheme,
-  useNavigationContainerRef,
-} from '@react-navigation/native';
+import { NavigationContainer, DarkTheme, Theme as NavTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from '@/context';
 import {
@@ -17,8 +12,11 @@ import {
   PlaylistAddSongsScreen,
   MusicPlayerScreen,
 } from '@/screens';
+import { JubileeDoorScreen, ForgotPasswordScreen } from '@/screens/Auth';
+import { PrivacyPolicyScreen, TermsOfUseScreen } from '@/screens/Legal';
 import { MainTabNavigator } from './MainTabNavigator';
 import { linking } from './linking';
+import { navigationRef } from './navigationRef';
 import { ShareDeepLinks } from './useShareDeepLinks';
 import type { RootStackParamList } from './types';
 
@@ -26,7 +24,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootNavigator: React.FC = () => {
   const theme = useTheme();
-  const navigationRef = useNavigationContainerRef<RootStackParamList>();
 
   const navTheme: NavTheme = {
     ...DarkTheme,
@@ -51,6 +48,12 @@ export const RootNavigator: React.FC = () => {
         <Stack.Screen name="AlbumList" component={AlbumListScreen} />
         <Stack.Screen name="ArtistList" component={ArtistListScreen} />
         <Stack.Screen name="PlaylistDetails" component={PlaylistDetailsScreen} />
+        {/* Sign-in is optional: guests open the door from a gated action (like,
+            rate, add to playlist) or Profile, and it closes itself on success. */}
+        <Stack.Screen name="JubileeDoor" component={JubileeDoorScreen} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
+        <Stack.Screen name="TermsOfUse" component={TermsOfUseScreen} />
         {/* Player + the song picker slide up as modals. */}
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} />

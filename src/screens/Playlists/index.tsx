@@ -5,9 +5,17 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/context';
-import { Screen, AppText, Artwork, IconButton, ProfileButton, ConfirmDialog } from '@/components/common';
+import {
+  Screen,
+  AppText,
+  Artwork,
+  Button,
+  IconButton,
+  ProfileButton,
+  ConfirmDialog,
+} from '@/components/common';
 import { PlaylistNameDialog } from '@/components/playlists';
-import { useAppDispatch, useAppSelector, usePlayer } from '@/hooks';
+import { useAppDispatch, useAppSelector, usePlayer, useRequireAuth } from '@/hooks';
 import { createPlaylist, deletePlaylist, fetchPlaylistDetail, fetchPlaylists } from '@/redux';
 import type { PlaylistSummary } from '@/services/playlists';
 import type { PlaylistsStackParamList, RootStackParamList } from '@/navigation/types';
@@ -25,6 +33,9 @@ export const PlaylistsScreen: React.FC = () => {
   const navigation = useNavigation<Nav>();
   const dispatch = useAppDispatch();
   const { playTracks } = usePlayer();
+  const requireAuth = useRequireAuth();
+  // Playlists are server-side and per account; a guest sees a sign-in invitation.
+  const authed = useAppSelector((s) => s.auth.user != null);
 
   const summaries = useAppSelector((s) => s.playlists.summaries);
   const playlistDetails = useAppSelector((s) => s.playlists.byId);
@@ -37,8 +48,8 @@ export const PlaylistsScreen: React.FC = () => {
   // Refresh the server playlists each time the tab gains focus.
   useFocusEffect(
     useCallback(() => {
-      void dispatch(fetchPlaylists());
-    }, [dispatch]),
+      if (authed) void dispatch(fetchPlaylists());
+    }, [authed, dispatch]),
   );
 
   // Prefer the first track's CDN artwork (same source album covers use, so it's
@@ -124,94 +135,112 @@ export const PlaylistsScreen: React.FC = () => {
           {t('tabs.playlists')}
         </AppText>
         <View style={styles.headerActions}>
-          <IconButton name="add" size={26} onPress={() => setCreating(true)} />
+          <IconButton
+            name="add"
+            size={26}
+            onPress={() => requireAuth('playlist') && setCreating(true)}
+          />
           <ProfileButton size={32} onPress={() => navigation.navigate('Profile')} />
         </View>
       </View>
 
-      <FlatList
-        data={playlists}
-        keyExtractor={(pl) => pl.id}
-        numColumns={2}
-        columnWrapperStyle={styles.column}
-        contentContainerStyle={styles.grid}
-        renderItem={({ item: pl }) => (
-          <View style={[styles.card, { backgroundColor: theme.colors.surface, borderRadius: theme.radius.md }]}>
-            <Pressable onPress={() => openPlaylist(pl)}>
-              <Artwork uri={coverFor(pl)} style={styles.cover} iconSize={28} />
-              <View style={styles.countBadge}>
-                <AppText variant="caption" style={styles.countText}>
-                  {t('playlist.songCount', { count: pl.itemCount })}
-                </AppText>
-              </View>
-            </Pressable>
-
-            <View style={styles.cardBody}>
-              <AppText variant="label" numberOfLines={1}>
-                {pl.name}
-              </AppText>
-
-              <Pressable
-                onPress={() => onPlay(pl)}
-                disabled={pl.itemCount === 0}
-                style={({ pressed }) => [
-                  styles.playBtn,
-                  {
-                    backgroundColor: theme.colors.accent,
-                    borderRadius: theme.radius.sm,
-                    opacity: pl.itemCount === 0 ? 0.4 : pressed ? 0.8 : 1,
-                  },
-                ]}
-              >
-                <Ionicons name="play" size={16} color="#FFFFFF" />
-                <AppText variant="label" style={styles.playLabel}>
-                  {t('common.play')}
-                </AppText>
+      {authed ? (
+        <FlatList
+          data={playlists}
+          keyExtractor={(pl) => pl.id}
+          numColumns={2}
+          columnWrapperStyle={styles.column}
+          contentContainerStyle={styles.grid}
+          renderItem={({ item: pl }) => (
+            <View style={[styles.card, { backgroundColor: theme.colors.surface, borderRadius: theme.radius.md }]}>
+              <Pressable onPress={() => openPlaylist(pl)}>
+                <Artwork uri={coverFor(pl)} style={styles.cover} iconSize={28} />
+                <View style={styles.countBadge}>
+                  <AppText variant="caption" style={styles.countText}>
+                    {t('playlist.songCount', { count: pl.itemCount })}
+                  </AppText>
+                </View>
               </Pressable>
 
-              <View style={styles.secondaryRow}>
+              <View style={styles.cardBody}>
+                <AppText variant="label" numberOfLines={1}>
+                  {pl.name}
+                </AppText>
+
                 <Pressable
-                  onPress={() => openPlaylist(pl)}
+                  onPress={() => onPlay(pl)}
+                  disabled={pl.itemCount === 0}
                   style={({ pressed }) => [
-                    styles.secondaryBtn,
+                    styles.playBtn,
                     {
-                      backgroundColor: theme.colors.backgroundElevated,
-                      borderColor: theme.colors.border,
+                      backgroundColor: theme.colors.accent,
                       borderRadius: theme.radius.sm,
-                      opacity: pressed ? 0.7 : 1,
+                      opacity: pl.itemCount === 0 ? 0.4 : pressed ? 0.8 : 1,
                     },
                   ]}
                 >
-                  <AppText variant="label" numberOfLines={1}>
-                    {t('common.open')}
+                  <Ionicons name="play" size={16} color="#FFFFFF" />
+                  <AppText variant="label" style={styles.playLabel}>
+                    {t('common.play')}
                   </AppText>
                 </Pressable>
-                <Pressable
-                  onPress={() => setPendingDelete(pl)}
-                  style={({ pressed }) => [
-                    styles.secondaryBtn,
-                    {
-                      backgroundColor: theme.colors.backgroundElevated,
-                      borderColor: theme.colors.danger,
-                      borderRadius: theme.radius.sm,
-                      opacity: pressed ? 0.7 : 1,
-                    },
-                  ]}
-                >
-                  <AppText variant="label" numberOfLines={1} style={{ color: theme.colors.danger }}>
-                    {t('common.delete')}
-                  </AppText>
-                </Pressable>
+
+                <View style={styles.secondaryRow}>
+                  <Pressable
+                    onPress={() => openPlaylist(pl)}
+                    style={({ pressed }) => [
+                      styles.secondaryBtn,
+                      {
+                        backgroundColor: theme.colors.backgroundElevated,
+                        borderColor: theme.colors.border,
+                        borderRadius: theme.radius.sm,
+                        opacity: pressed ? 0.7 : 1,
+                      },
+                    ]}
+                  >
+                    <AppText variant="label" numberOfLines={1}>
+                      {t('common.open')}
+                    </AppText>
+                  </Pressable>
+                  <Pressable
+                    onPress={() => setPendingDelete(pl)}
+                    style={({ pressed }) => [
+                      styles.secondaryBtn,
+                      {
+                        backgroundColor: theme.colors.backgroundElevated,
+                        borderColor: theme.colors.danger,
+                        borderRadius: theme.radius.sm,
+                        opacity: pressed ? 0.7 : 1,
+                      },
+                    ]}
+                  >
+                    <AppText variant="label" numberOfLines={1} style={{ color: theme.colors.danger }}>
+                      {t('common.delete')}
+                    </AppText>
+                  </Pressable>
+                </View>
               </View>
             </View>
-          </View>
-        )}
-        ListEmptyComponent={
-          <AppText variant="bodySm" color="textMuted" style={styles.plEmpty}>
-            {t('library.emptyPlaylists')}
+          )}
+          ListEmptyComponent={
+            <AppText variant="bodySm" color="textMuted" style={styles.plEmpty}>
+              {t('library.emptyPlaylists')}
+            </AppText>
+          }
+        />
+      ) : (
+        <View style={styles.guest}>
+          <Ionicons name="musical-notes" size={48} color={theme.colors.iconMuted} />
+          <AppText variant="body" color="textSecondary" style={styles.guestText}>
+            {t('library.signInPlaylists')}
           </AppText>
-        }
-      />
+          <Button
+            label={t('auth.prompt.signIn')}
+            icon="log-in-outline"
+            onPress={() => navigation.navigate('JubileeDoor')}
+          />
+        </View>
+      )}
 
       <PlaylistNameDialog
         visible={creating}
@@ -269,6 +298,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   plEmpty: { paddingVertical: 8 },
+  guest: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32, gap: 16 },
+  guestText: { textAlign: 'center' },
 });
 
 export default PlaylistsScreen;

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { authService } from '@/services/auth';
 import type { AuthUser, SignInArgs } from '@/services/auth';
 import type { ApiError } from '@/services/api';
@@ -6,6 +6,9 @@ import type { ApiError } from '@/services/api';
 export type { AuthUser };
 
 export type AuthStatus = 'restoring' | 'idle' | 'loading' | 'authenticated' | 'error';
+
+/** What a guest tried to do when they were asked to sign in (picks the prompt copy). */
+export type SignInReason = 'like' | 'rate' | 'playlist';
 
 interface AuthState {
   user: AuthUser | null;
@@ -15,6 +18,8 @@ interface AuthState {
   pending2FA: { verificationGuid: string; email: string } | null;
   /** Set after sign-up phase 1. */
   pendingSignup: { verificationGuid: string; email: string } | null;
+  /** Set when a guest tries an account-only action; drives SignInPromptGate. */
+  signInPrompt: SignInReason | null;
 }
 
 const initialState: AuthState = {
@@ -23,6 +28,7 @@ const initialState: AuthState = {
   error: null,
   pending2FA: null,
   pendingSignup: null,
+  signInPrompt: null,
 };
 
 const errMessage = (e: unknown): string =>
@@ -133,6 +139,13 @@ const authSlice = createSlice({
     clearAuthError(state) {
       state.error = null;
     },
+    /** Ask a guest to sign in before an account-only action. */
+    promptSignIn(state, action: PayloadAction<SignInReason>) {
+      state.signInPrompt = action.payload;
+    },
+    dismissSignInPrompt(state) {
+      state.signInPrompt = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -236,5 +249,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearSession, clearAuthError } = authSlice.actions;
+export const { clearSession, clearAuthError, promptSignIn, dismissSignInPrompt } =
+  authSlice.actions;
 export default authSlice.reducer;

@@ -59,5 +59,7 @@ export {
   deleteAccount,
   clearSession,
   clearAuthError,
+  promptSignIn,
+  dismissSignInPrompt,
 } from './slices/authSlice';
-export type { AuthUser, AuthStatus } from './slices/authSlice';
+export type { AuthUser, AuthStatus, SignInReason } from './slices/authSlice';

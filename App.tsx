@@ -30,6 +30,7 @@ import { getMobileConfig, onMobileConfigUpdated } from '@/services/mobileConfig'
 import { CONFIG } from '@/constants';
 import { SplashScreen } from '@/components/SplashScreen';
 import { PlaybackLimitGate } from '@/components/PlaybackLimitGate';
+import { SignInPromptGate } from '@/components/SignInPromptGate';
 import { AppUpdateGate } from '@/components/AppUpdateGate';
 import { PlaylistMenuProvider } from '@/components/playlists';
 import { storage, STORAGE_KEYS } from '@/services/storage';
@@ -62,9 +63,11 @@ const PlayerSyncGate: React.FC = () => {
 };
 
 /**
- * Chooses between the unauthenticated flow and the main app, based on the
- * restored session and the first-launch onboarding flag. Renders nothing while
- * either is still resolving (the splash overlay covers that window).
+ * Shows the first-launch welcome slides, then the main app. Signing in is
+ * optional: guests browse and play freely and are asked to sign in only when
+ * they like, rate or add to a playlist (see SignInPromptGate). Renders nothing
+ * while the session or the onboarding flag is still resolving (the splash
+ * overlay covers that window).
  */
 const RootGate: React.FC = () => {
   const status = useAppSelector((s) => s.auth.status);
@@ -79,12 +82,12 @@ const RootGate: React.FC = () => {
 
   if (status === 'restoring' || hasOnboarded === null) return null;
 
-  if (isAuthenticated) {
-    return <RootNavigator />;
+  // A returning signed-in user has already seen the slides.
+  if (!hasOnboarded && !isAuthenticated) {
+    return <AuthNavigator onFinish={() => setHasOnboarded(true)} />;
   }
 
-  // Signed out / never signed in: the Jubilee Door (or first-run Welcome slides).
-  return <AuthNavigator initialRoute={hasOnboarded ? 'JubileeDoor' : 'Welcome'} />;
+  return <RootNavigator />;
 };
 
 export default function App() {
@@ -149,6 +152,8 @@ export default function App() {
               </PlaylistMenuProvider>
               {/* Free-plan daily-limit popup (shown when playback hits the cap). */}
               <PlaybackLimitGate />
+              {/* "Sign in to continue" for guests trying like / rate / add to playlist. */}
+              <SignInPromptGate />
               {/* Post-splash "update available" prompt (checks once per launch). */}
               <AppUpdateGate enabled={!showSplash && fontsLoaded} />
             </ThemeProvider>
