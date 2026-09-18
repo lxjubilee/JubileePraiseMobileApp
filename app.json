@@ -17,6 +17,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.jubileepraise.app",
+      "buildNumber": "2",
       "associatedDomains": [
         "applinks:jubileepraise.com",
         "applinks:www.jubileepraise.com"
