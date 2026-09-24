@@ -46,7 +46,7 @@ export const PRIVACY_POLICY: LegalDocument = {
         {
           type: 'bullets',
           items: [
-            'Account details. When you sign up we collect your first and last name, date of birth, and email address. Your password is stored only in a securely hashed form — we never keep it in plain text.',
+            'Account details. When you sign up we collect your first and last name, date of birth, and email address. We ask for your date of birth only to confirm you meet the minimum age to create an account (see "Children\'s Privacy"). Your password is stored only in a securely hashed form — we never keep it in plain text.',
             'Content you create. Comments you post, star ratings you give, award nominations (and the reasons you provide), and the playlists you build are stored and associated with your account.',
             'Communications. If you contact us for support, we keep the messages and contact details you send so we can respond.',
           ],
@@ -152,7 +152,7 @@ export const PRIVACY_POLICY: LegalDocument = {
           type: 'bullets',
           items: [
             'Access and update. You can view your sign-in email and update your password from your account page.',
-            `Delete your account. You can permanently delete your account and its associated data at any time from the "Danger zone" on your account page. This action cannot be undone.`,
+            `Delete your account. You can permanently delete your account and its associated data at any time from the "Danger zone" on your account page on the website, or in the app under Profile → Delete Account. This action cannot be undone.`,
             'Email. Transactional email is required to operate your account; any optional email will include an unsubscribe link.',
             'Regional rights. Depending on where you live (for example under the GDPR or CCPA/CPRA), you may have rights to access, correct, delete, port, or restrict the processing of your personal information, and to object to certain uses. To exercise these rights, contact us using the details below.',
           ],

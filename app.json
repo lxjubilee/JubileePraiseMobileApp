@@ -18,6 +18,9 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.jubileepraise.app",
       "buildNumber": "2",
+      "config": {
+        "usesNonExemptEncryption": false
+      },
       "associatedDomains": [
         "applinks:jubileepraise.com",
         "applinks:www.jubileepraise.com"
