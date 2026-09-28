@@ -50,20 +50,20 @@ const extra = (Constants.expoConfig?.extra ?? {}) as Partial<AppExtra>;
 const useMock = extra.useMock ?? true;
 
 export const ENV = {
-  CDN_BASE_URL: extra.cdnBaseUrl ?? 'https://cdn.jubileeverse.com',
+  CDN_BASE_URL: extra.cdnBaseUrl ?? 'https://cdn.jubileepraise.com',
   API_BASE_URL: extra.apiBaseUrl ?? 'https://api.jubileeverse.com/v1',
   USE_MOCK: useMock,
   // Backward-compatible: fall back to the old boolean when `dataSource` is unset.
   DATA_SOURCE: (extra.dataSource ?? (useMock ? 'mock' : 'api')) as DataSourceKind,
   // Unified jubilujah-api — single host for every /api/auth/* call (Bearer).
-  API_AUTH_BASE: extra.authBaseUrl ?? 'https://api.jubilujah.com',
+  API_AUTH_BASE: extra.authBaseUrl ?? 'https://api.jubileepraise.com',
   // Host for the dynamic-content config ONLY. Defaults to the auth host so prod
   // is unchanged; override via extra.mobileConfigBaseUrl to test a local API.
-  MOBILE_CONFIG_BASE: extra.mobileConfigBaseUrl ?? extra.authBaseUrl ?? 'https://api.jubilujah.com',
+  MOBILE_CONFIG_BASE: extra.mobileConfigBaseUrl ?? extra.authBaseUrl ?? 'https://api.jubileepraise.com',
   // Host for the catalog MANIFEST ONLY (albums/artists/categories). Defaults to
   // the CDN so prod is unchanged; override via extra.catalogBaseUrl to browse a
   // locally-built catalog. Media still resolves against CDN_BASE_URL.
-  CATALOG_BASE_URL: extra.catalogBaseUrl ?? extra.cdnBaseUrl ?? 'https://cdn.jubileeverse.com',
+  CATALOG_BASE_URL: extra.catalogBaseUrl ?? extra.cdnBaseUrl ?? 'https://cdn.jubileepraise.com',
   // "Update available" popup. Defaults ON so an unset config behaves as before;
   // app.json currently sets it false.
   APP_UPDATE_PROMPT: extra.appUpdatePrompt ?? true,

@@ -77,7 +77,7 @@
       "expo-secure-store"
     ],
     "extra": {
-      "cdnBaseUrl": "https://cd.jubilujah.com",
+      "cdnBaseUrl": "https://cdn.jubileepraise.com",
       "useMock": false,
       "dataSource": "manifest",
       "authBaseUrl": "https://api.jubileepraise.com",

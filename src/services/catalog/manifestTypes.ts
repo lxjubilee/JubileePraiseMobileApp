@@ -26,6 +26,19 @@ export interface ManifestTrack {
   url: string;
   /** Whether this entry is a playable audio file. */
   audio: boolean;
+  /**
+   * Tokenized manifests only: the absolute audio URL on the jubileepraise CDN,
+   * e.g. "https://cdn.jubileepraise.com/music/<site>/<album>/<track>.mp3". The
+   * readable `url` does not exist on that host, so a track without this is not
+   * playable there.
+   */
+  cdn?: string;
+}
+
+/** Tokenized manifests only: where an album lives on the jubileepraise CDN. */
+export interface ManifestAlbumCdn {
+  /** Path from the CDN root, e.g. "music/ESATs234Cigp/Mya73QZzoyjg". The cover is `<path>/cover.png`. */
+  path: string;
 }
 
 export interface ManifestAlbum {
@@ -55,6 +68,8 @@ export interface ManifestAlbum {
    */
   genres?: string[];
   tracks: ManifestTrack[];
+  /** Tokenized manifests only; absent on albums the CDN doesn't have yet. */
+  cdn?: ManifestAlbumCdn;
 }
 
 export interface ManifestArtist {
@@ -78,5 +93,11 @@ export interface CatalogManifest {
   totalAlbums: number;
   totalPlayableAlbums: number;
   totalPlayableTracks: number;
+  /**
+   * Set on tokenized manifests (e.g. "https://cdn.jubileepraise.com"), where
+   * media is addressed by the per-album/per-track `cdn` fields instead of the
+   * readable `path`/`url`.
+   */
+  cdnHost?: string;
   categories: ManifestCategory[];
 }

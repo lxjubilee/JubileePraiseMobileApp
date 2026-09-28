@@ -12,12 +12,18 @@ import {
  * lookup structures `ManifestDataSource` serves from. Built once per session.
  *
  * Conventions (all relative paths are resolved + URL-encoded by cdnUrl()):
- *  - audio:  `music/<track.url>`
- *  - cover:  `music/<album.path>/artwork/<album.code>.png`
+ *  - audio:  `music/<track.url>`, or the track's absolute `cdn` URL when present
+ *  - cover:  `music/<album.path>/artwork/<album.code>.png`, or `<album.cdn.path>/cover.png`
+ *
+ * A tokenized manifest (`cdnHost` set) is served from a host that only has the
+ * tokenized paths, so there an album without a `cdn` block, or a track without a
+ * `cdn` URL, is treated as not published.
  *
  * Albums whose cover isn't published (`hasArtwork === false`) or that have no
  * playable track (`isPlayable === false`) are dropped here, so the lookup
  * structures only ever contain items with real artwork and at least one track.
+ * When two albums share a code, only the first is kept, since the code is the
+ * album's id everywhere (routes, ratings, playlists).
  */
 
 const MAX_RAIL_ITEMS = 20;
@@ -33,10 +39,18 @@ function accentFor(id: string): string {
 }
 
 const coverPath = (album: ManifestAlbum): string =>
-  `music/${album.path}/artwork/${album.code}.png`;
+  album.cdn ? `${album.cdn.path}/cover.png` : `music/${album.path}/artwork/${album.code}.png`;
 
-const isPlayable = (album: ManifestAlbum): boolean =>
-  album.playable === 1 || album.tracks.some((t) => t.audio);
+const trackPath = (t: ManifestAlbum['tracks'][number]): string => t.cdn ?? `music/${t.url}`;
+
+/** Playable audio entries (not booklets etc.); on a tokenized manifest, only ones the CDN has. */
+const playableTracks = (album: ManifestAlbum, tokenized: boolean) =>
+  album.tracks.filter((t) => t.audio && (!tokenized || !!t.cdn));
+
+const isPlayable = (album: ManifestAlbum, tokenized: boolean): boolean =>
+  tokenized
+    ? !!album.cdn && playableTracks(album, true).length > 0
+    : album.playable === 1 || album.tracks.some((t) => t.audio);
 
 /**
  * Whether the album's cover is published to the CDN. Albums without artwork (or
@@ -57,7 +71,7 @@ function buildTrack(
     // `index` guarantees uniqueness — some albums repeat track numbers (`n`).
     id: `${album.code}-${index}-${t.n}`,
     title: t.title,
-    url: `music/${t.url}`,
+    url: trackPath(t),
     artwork: coverPath(album),
     duration: 0, // not in the manifest; track-player reports it from the file
     artistId: artist.slug,
@@ -73,6 +87,7 @@ function buildAlbum(
   artist: ManifestArtist,
   category: ManifestCategory,
   withTracks: boolean,
+  tokenized: boolean,
 ): Album {
   return {
     id: album.code,
@@ -88,8 +103,7 @@ function buildAlbum(
     accentColor: accentFor(album.code),
     ...(withTracks
       ? {
-          tracks: album.tracks
-            .filter((t) => t.audio) // exclude non-playable extras (booklets, etc.)
+          tracks: playableTracks(album, tokenized)
             .sort((a, b) => a.n - b.n)
             .map((t, i) => buildTrack(t, album, artist, i)),
         }
@@ -132,6 +146,8 @@ export function buildCatalogIndex(manifest: CatalogManifest): CatalogIndex {
   const artistsById = new Map<string, Artist>();
   const albumsByArtist = new Map<string, Album[]>();
   const tracksByArtist = new Map<string, Track[]>();
+  const tokenized = !!manifest.cdnHost;
+  const seenCodes = new Set<string>();
 
   const featuredArtistIds: string[] = [];
   let heroAlbumId: string | undefined;
@@ -148,7 +164,11 @@ export function buildCatalogIndex(manifest: CatalogManifest): CatalogIndex {
       // Only albums with a published cover AND at least one playable track are
       // surfaced. An artist left with zero such albums is hidden entirely; its
       // image comes from the first one.
-      const visibleAlbums = artist.albums.filter((a) => hasArtwork(a) && isPlayable(a));
+      const visibleAlbums = artist.albums.filter((a) => {
+        if (!hasArtwork(a) || !isPlayable(a, tokenized) || seenCodes.has(a.code)) return false;
+        seenCodes.add(a.code);
+        return true;
+      });
       if (visibleAlbums.length === 0) continue;
 
       const domainArtist = buildArtist(artist, category, visibleAlbums[0]);
@@ -161,14 +181,14 @@ export function buildCatalogIndex(manifest: CatalogManifest): CatalogIndex {
       let firstPlayableCode: string | undefined;
 
       for (const album of visibleAlbums) {
-        const light = buildAlbum(album, artist, category, false);
-        const full = buildAlbum(album, artist, category, true);
+        const light = buildAlbum(album, artist, category, false, tokenized);
+        const full = buildAlbum(album, artist, category, true, tokenized);
         albums.push(light);
         albumsById.set(album.code, full);
         artistAlbums.push(light);
         artistTracks.push(...(full.tracks ?? []));
 
-        if (isPlayable(album)) {
+        if (isPlayable(album, tokenized)) {
           artistHasPlayable = true;
           if (!firstPlayableCode) firstPlayableCode = album.code;
           if (!heroAlbumId) heroAlbumId = album.code;

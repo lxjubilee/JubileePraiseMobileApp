@@ -105,7 +105,53 @@ async function revalidate(): Promise<void> {
 async function fetchManifest(): Promise<CatalogManifest> {
   const res = await fetch(MANIFEST_URL);
   if (!res.ok) throw new Error(`catalog manifest HTTP ${res.status}`);
-  return (await res.json()) as CatalogManifest;
+  return slimManifest((await res.json()) as CatalogManifest);
+}
+
+/**
+ * Keeps only the fields `manifestMappers` reads. The tokenized manifest carries
+ * a lot of publishing metadata (~6.8 MB raw vs ~2.4 MB slim), and the raw size
+ * would overflow Android's default 6 MB AsyncStorage cap, so the snapshot could
+ * never be cached. On a tokenized track the readable `url` is dropped too, since
+ * its `cdn` URL is the one that gets played.
+ */
+function slimManifest(m: CatalogManifest): CatalogManifest {
+  return {
+    generated: m.generated,
+    totalArtists: m.totalArtists,
+    totalAlbums: m.totalAlbums,
+    totalPlayableAlbums: m.totalPlayableAlbums,
+    totalPlayableTracks: m.totalPlayableTracks,
+    ...(m.cdnHost ? { cdnHost: m.cdnHost } : {}),
+    categories: m.categories.map((c) => ({
+      key: c.key,
+      label: c.label,
+      artists: c.artists.map((a) => ({
+        slug: a.slug,
+        name: a.name,
+        role: a.role,
+        albums: a.albums.map((al) => ({
+          code: al.code,
+          title: al.title,
+          folder: al.folder,
+          path: al.path,
+          playable: al.playable,
+          trackCount: al.trackCount,
+          hasArtwork: al.hasArtwork,
+          genres: al.genres,
+          ...(al.cdn ? { cdn: { path: al.cdn.path } } : {}),
+          tracks: (al.tracks ?? []).map((t) => ({
+            n: t.n,
+            title: t.title,
+            file: t.cdn ? '' : t.file,
+            url: t.cdn ? '' : t.url,
+            audio: t.audio,
+            ...(t.cdn ? { cdn: t.cdn } : {}),
+          })),
+        })),
+      })),
+    })),
+  };
 }
 
 interface ChunkMeta {
