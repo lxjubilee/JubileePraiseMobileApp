@@ -29,12 +29,8 @@ The counts come from sorting the checklist section by section. They are estimate
    - The music catalogue loads from JubiLujah's CDN (`cd.jubilujah.com`).
    - JubiLujah was removed from the App Store on 24 September 2026. That helps, but Apple's record of it remains.
    - Fix: a business decision is needed. Either merge the brands into one app, or make Jubilee Praise genuinely distinct in concept, content, screens and assets.
-2. **4.3(a) Design: duplicate app icon.** `assets/JubileePraise-App-Icon.png` is byte-identical to KJubilee's app icon and to `JubileeVerse-App-Icon.png`. The same portrait also appears in the Jubilee Verse and Jubilee Inspire icons. Fix: a new, original icon.
-3. **1.2 User-generated content has no Report or Block.**
-   - Users can post text reviews (`ReviewComposer`) that other users read, and playlists can be public (`isPublic`).
-   - `src/components/reviews/ReviewItem.tsx` notes that reporting is "deferred".
-   - The API (`API docs/`) has no report or block endpoints.
-   - Fix: add Report and Block in the app, add the matching endpoints on the server, and set up a real moderation process.
+2. ~~**4.3(a) Design: duplicate app icon.**~~ **Resolved 25 September 2026.** A new icon (`assets/JubileePraise-App-Icon-1024.png`, made from `assets/JubileePraise-App-Icon.png`) replaced it. It does not match any image in the JubiLujah, KJubilee, Torah Sings, Jubilee Verse or Jubilee Inspire assets. Still to do: confirm the rights to the photo, and replace it with a 1024px original when available (the current one is enlarged from 200px).
+3. ~~**1.2 User-generated content has no Report or Block.**~~ **Resolved 25 September 2026.** Written reviews are switched off (`CONFIG.WRITTEN_REVIEWS = false` in `src/constants/config.ts`). The app no longer lets users write reviews or shows reviews by other users; only star ratings, as an anonymous average, remain. Turn written reviews back on only after Report, Block and a moderation process exist.
 4. **2.4.1 / Release gate: iPad not tested.** `supportsTablet` is `false`, so iPads run the app in iPhone-compatibility mode. Apple has reviewed our other apps on an iPad Air. Fix: test on an iPad before submitting.
 
 ## Findings by area
@@ -46,7 +42,7 @@ The counts come from sorting the checklist section by section. They are estimate
 | Sign-in optional | 5.1.1(v) | Browsing and playback work without an account | Pass |
 | Privacy Policy in app | 5.1.1(i) | Profile → Privacy Policy; also linked from sign-up | Pass |
 | Privacy Policy content | 5.1.1(i) | Covers collection, third parties (Cloudflare, SendGrid), retention, deletion and children. The date-of-birth purpose and the in-app deletion path were added in this change. | Pass |
-| Policy accuracy | 5.1.1(i), 2.3 | The policy mentions "CSRF protection", but `API docs/API.md` says the API has none. Several passages describe the website (cookies, pages). | **Review with legal** |
+| Policy accuracy | 5.1.1(i), 2.3 | Rewritten 25 September 2026 in `src/screens/Legal/content.ts`: the CSRF claim is gone, the policy now covers both the website and the app, and it describes listening analytics, on-device storage, Turnstile and the JubileeInspire account link. The website `/privacy` page must be updated to the same text. | Pass (in app); **update website** |
 | Data minimisation | 5.1.1(iii) | Date of birth is collected only for the 13+ age check (`MIN_AGE = 13`) | Pass |
 | Permissions | 5.1.1(ii) | No camera, microphone, location, contacts, photos or tracking | Pass |
 | Background modes | 2.5.4 | `UIBackgroundModes: audio`, used for music playback (react-native-track-player) | Pass |

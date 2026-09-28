@@ -4,7 +4,7 @@ Paste the section below into **App Store Connect → App Review Information → 
 
 ---
 
-Jubilee Praise is a Christian worship and praise music streaming app. Users can browse albums and artists, stream songs, build playlists, like songs and rate or review albums.
+Jubilee Praise is a Christian worship and praise music streaming app. Users can browse albums and artists, stream songs, build playlists, like songs and give albums and songs a star rating. Written reviews are not available in this version, so the app shows no content written by other users.
 
 **This app replaces JubiLujah.** We have removed our earlier app, JubiLujah, from the App Store. Jubilee Praise replaces it; we will not publish both. [Describe what makes Jubilee Praise distinct.]
 

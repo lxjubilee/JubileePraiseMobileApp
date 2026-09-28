@@ -30,13 +30,15 @@ export interface LegalDocument {
 }
 
 const EFFECTIVE_DATE = 'June 17, 2026';
+/** The Privacy Policy was revised on its own to cover the mobile app. */
+const PRIVACY_EFFECTIVE_DATE = 'September 25, 2026';
 
 export const PRIVACY_POLICY: LegalDocument = {
   title: 'Privacy Policy',
-  effectiveDate: EFFECTIVE_DATE,
+  effectiveDate: PRIVACY_EFFECTIVE_DATE,
   contactEmail: 'privacy@jubileepraise.com',
   intro: [
-    `JubileePraise.com ("Jubilee Praise," "we," "us," or "our"), operated by Jubilee Software, Inc., provides a faith-centered music streaming and discovery experience. This Privacy Policy applies to the JubileePraise.com website and the services offered through it (the "Service"). By creating an account or using the Service, you agree to the practices described below.`,
+    `Jubilee Praise ("Jubilee Praise," "we," "us," or "our"), operated by Jubilee Software, Inc., provides a faith-centered music streaming and discovery experience. This Privacy Policy applies to the JubileePraise.com website and the Jubilee Praise mobile app for iOS and Android (together, the "Service"). You can listen without an account; if you create one or sign in, you agree to the practices described below.`,
   ],
   sections: [
     {
@@ -47,7 +49,7 @@ export const PRIVACY_POLICY: LegalDocument = {
           type: 'bullets',
           items: [
             'Account details. When you sign up we collect your first and last name, date of birth, and email address. We ask for your date of birth only to confirm you meet the minimum age to create an account (see "Children\'s Privacy"). Your password is stored only in a securely hashed form — we never keep it in plain text.',
-            'Content you create. Comments you post, star ratings you give, award nominations (and the reasons you provide), and the playlists you build are stored and associated with your account.',
+            'Your activity. The star ratings you give, the songs and albums you like, and the playlists you build are stored and associated with your account. On the website you can also write reviews and take part in features such as comments and award nominations; the mobile app does not offer these.',
             'Communications. If you contact us for support, we keep the messages and contact details you send so we can respond.',
           ],
         },
@@ -55,15 +57,20 @@ export const PRIVACY_POLICY: LegalDocument = {
         {
           type: 'bullets',
           items: [
+            'Listening activity. When you play music, we record which song was played, how long you listened, whether you finished or skipped it, and a random session identifier that resets each time the app is restarted. If you are signed in, this is linked to your account. We use it to show what is being played and to improve the catalog and the Service.',
             `Security & verification. To confirm your email and protect your account we generate one-time, 6-digit verification codes (used at sign-up and, when enabled, for two-step sign-in), and we record your "keep me signed in" preference.`,
-            'Technical & usage data. Like most websites, our servers automatically log information such as your IP address, browser type and user-agent, the pages you request, and the date and time of each request. This helps us operate, secure, and improve the Service.',
-            'Cookies. We use the cookies described in Section 4 to keep you signed in and to protect requests against forgery.',
+            'Technical data. Our servers automatically log information such as your IP address, device or browser type (from the user-agent), the requests made, and the date and time of each request. This helps us operate, secure, and improve the Service.',
           ],
         },
-        { type: 'subheading', text: 'Information from sign-in providers' },
+        { type: 'subheading', text: 'What the mobile app does not collect' },
         {
           type: 'paragraph',
-          text: 'If you choose to continue with JubileeInspire Single Sign-On (SSO), we receive basic profile information (such as your name and email address) from your JubileeInspire account so we can create or link your Jubilee Praise profile. Your Jubilee Praise and JubileeInspire accounts may be kept in sync as part of the Jubilee family of services.',
+          text: "The app does not access your location, contacts, photos, camera, or microphone, does not use your device's advertising identifier, and does not track you across other companies' apps or websites.",
+        },
+        { type: 'subheading', text: 'Jubilee family accounts' },
+        {
+          type: 'paragraph',
+          text: "Jubilee Praise accounts are part of the Jubilee family of services. When you sign in, our servers verify your credentials with JubileeInspire, the Jubilee family's account service, and may keep your basic profile (name and email address) in sync with it. If you choose to continue with JubileeInspire on the website, we receive the same basic profile information from your JubileeInspire account.",
         },
       ],
     },
@@ -74,16 +81,16 @@ export const PRIVACY_POLICY: LegalDocument = {
           type: 'bullets',
           items: [
             'Create and manage your account, authenticate you, and keep your session secure.',
-            'Provide the core experience — streaming the catalog and saving your playlists, ratings, comments, and nominations.',
+            'Provide the core experience — streaming the catalog and saving your playlists, likes, and ratings.',
             'Send you service-related (transactional) email, such as verification codes, password-reset links, and important account or security notices.',
+            'Understand how the catalog is used (for example, which songs are played and finished) so we can improve it.',
             'Detect, prevent, and respond to fraud, abuse, and security incidents.',
-            'Maintain, analyze, and improve the Service.',
             'Comply with legal obligations and enforce our terms.',
           ],
         },
         {
           type: 'paragraph',
-          text: 'We do not use your personal information to serve third-party advertising, and we do not sell your personal information.',
+          text: "We do not use your personal information to serve third-party advertising, we do not track you across other companies' apps or websites, and we do not sell your personal information.",
         },
       ],
     },
@@ -97,23 +104,32 @@ export const PRIVACY_POLICY: LegalDocument = {
       ],
     },
     {
-      heading: '4. Cookies and Similar Technologies',
+      heading: '4. Cookies, Device Storage, and Similar Technologies',
       blocks: [
+        { type: 'subheading', text: 'On the website' },
         {
           type: 'paragraph',
-          text: 'We rely on a small number of strictly necessary cookies; we do not use advertising or cross-site tracking cookies.',
+          text: 'We use a small number of strictly necessary cookies; we do not use advertising or cross-site tracking cookies.',
         },
         {
           type: 'bullets',
           items: [
-            'Session cookies. Secure, HTTP-only cookies that keep you signed in as you move between pages.',
-            'CSRF token cookie (jv_csrf). A security cookie used to protect form submissions and other actions against cross-site request forgery.',
-            'Bot-protection. Our sign-in page may use Cloudflare Turnstile to tell humans from automated abuse; Cloudflare may set its own cookie for this purpose.',
+            'Session cookie. A secure, HTTP-only cookie that keeps you signed in as you move between pages.',
+            'Bot protection. Our sign-in page may use Cloudflare Turnstile to tell humans from automated abuse; Cloudflare may set its own cookie for this purpose.',
           ],
         },
         {
           type: 'paragraph',
           text: 'You can block or delete cookies in your browser settings, but disabling the essential cookies above will prevent you from signing in or using account features.',
+        },
+        { type: 'subheading', text: 'In the mobile app' },
+        {
+          type: 'bullets',
+          items: [
+            "The app does not use cookies. It keeps you signed in with sign-in tokens stored in your device's secure storage (the iOS Keychain or Android Keystore). Signing out removes them.",
+            'The app stores a few preferences on your device — your language, shuffle and repeat settings, recent searches, and a copy of your likes — so it works quickly. This information stays on your device, and deleting the app removes it.',
+            'Signing in may show a Cloudflare Turnstile check to tell humans from automated abuse. Cloudflare processes technical information about your device for this purpose.',
+          ],
         },
       ],
     },
@@ -124,15 +140,15 @@ export const PRIVACY_POLICY: LegalDocument = {
         {
           type: 'bullets',
           items: [
-            'Service providers. Vendors who process data on our behalf and under our instructions — for example our email delivery provider (SendGrid), security and content delivery (Cloudflare), and our hosting infrastructure.',
-            'The Jubilee family of services. If you use JubileeInspire SSO, account information is shared with JubileeInspire to provide and synchronize your single sign-on.',
+            'Service providers. Vendors who process data on our behalf and under our instructions — our email delivery provider (SendGrid), security, bot protection and content delivery (Cloudflare), and our hosting infrastructure.',
+            'The Jubilee family of services. Account information is shared with JubileeInspire to verify your sign-in and keep your Jubilee family account in sync (see Section 1).',
             'Legal and safety. When we reasonably believe disclosure is required by law, legal process, or to protect the rights, property, or safety of our users, the public, or Jubilee Praise.',
             'Business transfers. In connection with a merger, acquisition, or sale of assets, in which case we will continue to protect your information consistent with this policy.',
           ],
         },
         {
           type: 'paragraph',
-          text: 'Public content you create (such as comments and ratings) may be visible to other users of the Service.',
+          text: 'Star ratings are shown to other users only as an anonymous average and count. Reviews and comments you write on the website may be visible to other users there, with your name.',
         },
       ],
     },
@@ -151,8 +167,10 @@ export const PRIVACY_POLICY: LegalDocument = {
         {
           type: 'bullets',
           items: [
-            'Access and update. You can view your sign-in email and update your password from your account page.',
-            `Delete your account. You can permanently delete your account and its associated data at any time from the "Danger zone" on your account page on the website, or in the app under Profile → Delete Account. This action cannot be undone.`,
+            'Use without an account. You can browse and listen without creating an account.',
+            'Access and update. You can view your account details and change your password from your profile in the app or your account page on the website.',
+            'Remove a rating. You can remove any star rating you have given, at any time, from the album or song where you gave it.',
+            `Delete your account. You can permanently delete your account and its associated data at any time in the app under Profile → Delete Account, or from the "Danger zone" on your account page on the website. This action cannot be undone.`,
             'Email. Transactional email is required to operate your account; any optional email will include an unsubscribe link.',
             'Regional rights. Depending on where you live (for example under the GDPR or CCPA/CPRA), you may have rights to access, correct, delete, port, or restrict the processing of your personal information, and to object to certain uses. To exercise these rights, contact us using the details below.',
           ],
@@ -164,7 +182,7 @@ export const PRIVACY_POLICY: LegalDocument = {
       blocks: [
         {
           type: 'paragraph',
-          text: 'We use technical and organizational safeguards designed to protect your information, including encryption of data in transit (HTTPS/TLS), hashed password storage, CSRF protection, and optional two-step verification. No method of transmission or storage is completely secure, however, so we cannot guarantee absolute security.',
+          text: "We use technical and organizational safeguards designed to protect your information, including encryption of data in transit (HTTPS/TLS), hashed password storage, sign-in tokens kept in your device's secure storage, bot protection at sign-in, and optional two-step verification. No method of transmission or storage is completely secure, however, so we cannot guarantee absolute security.",
         },
       ],
     },
@@ -173,7 +191,7 @@ export const PRIVACY_POLICY: LegalDocument = {
       blocks: [
         {
           type: 'paragraph',
-          text: "While our catalog includes music made for children and families, the Service itself is intended for users who are old enough to maintain their own account. We do not knowingly collect personal information from children under the age of 13 (or the minimum age required in your jurisdiction). If you believe a child has provided us personal information, please contact us and we will take steps to delete it. Parents and guardians are encouraged to supervise children's use of the Service.",
+          text: "While our catalog includes music made for children and families, accounts are intended for users who are old enough to maintain their own account. We do not knowingly collect personal information from children under the age of 13 (or the minimum age required in your jurisdiction), and the sign-up form checks your date of birth for this reason. If you believe a child has provided us personal information, please contact us and we will take steps to delete it. Parents and guardians are encouraged to supervise children's use of the Service.",
         },
       ],
     },
@@ -182,7 +200,7 @@ export const PRIVACY_POLICY: LegalDocument = {
       blocks: [
         {
           type: 'paragraph',
-          text: 'JubileePraise.com is operated from the United States. If you access the Service from outside the United States, you understand that your information may be transferred to, stored, and processed in the United States and other countries where our service providers operate, which may have data protection laws different from those in your country.',
+          text: 'Jubilee Praise is operated from the United States. If you use the Service from outside the United States, you understand that your information may be transferred to, stored, and processed in the United States and other countries where our service providers operate, which may have data protection laws different from those in your country.',
         },
       ],
     },
