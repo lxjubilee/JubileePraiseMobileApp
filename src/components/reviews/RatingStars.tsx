@@ -15,6 +15,7 @@ import { AppText, ConfirmDialog } from '@/components/common';
 import { useTheme } from '@/context';
 import { formatCount } from '@/utils';
 import { useRequireAuth } from '@/hooks/useRequireAuth';
+import { useAppSelector } from '@/redux';
 import { reviewsApi } from '@/services/reviews';
 import type { MyReview, RatingDistribution, ReviewSummary, ReviewTargetType } from '@/types';
 import { RATING_GOLD, StarRating, starRowMetrics, type StarSize } from './StarRating';
@@ -106,6 +107,10 @@ export const RatingStars: React.FC<Props> = ({
   const { t } = useTranslation();
   const theme = useTheme();
   const requireAuth = useRequireAuth();
+  const authed = useAppSelector((s) => s.auth.user != null);
+  // Guests get no summary (ratings load only when signed in), so they see a
+  // sign-in hint rather than a "no ratings yet" that may not be true.
+  const guest = !authed && !summary;
   const isCompact = compact ?? size === 'sm';
 
   const average = summary?.average ?? null;
@@ -309,9 +314,11 @@ export const RatingStars: React.FC<Props> = ({
     return (
       <View style={styles.compactRow}>
         {interactive ? <GestureDetector gesture={gesture}>{starRow}</GestureDetector> : starRow}
-        <AppText variant="caption" color={showInput ? 'accent' : 'textMuted'} style={styles.compactCount}>
-          ({formatCount(count)})
-        </AppText>
+        {guest ? null : (
+          <AppText variant="caption" color={showInput ? 'accent' : 'textMuted'} style={styles.compactCount}>
+            ({formatCount(count)})
+          </AppText>
+        )}
         {interactive && rated && phase === 'idle' ? (
           <Pressable
             onPress={openRemove}
@@ -341,7 +348,11 @@ export const RatingStars: React.FC<Props> = ({
           </Animated.View>
         ) : !rated && phase === 'idle' ? (
           <View style={styles.readout}>
-            {average != null ? (
+            {guest ? (
+              <AppText variant="bodySm" color="textMuted" numberOfLines={1}>
+                {t('reviews.signInToRate')}
+              </AppText>
+            ) : average != null ? (
               <>
                 <AppText variant="h3">{average.toFixed(1)}</AppText>
                 <AppText variant="bodySm" color="textMuted" style={styles.count} numberOfLines={1}>

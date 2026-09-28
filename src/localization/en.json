@@ -398,6 +398,7 @@
     "editReview": "Edit review",
     "basedOn": "Based on {{count}} ratings",
     "noRatingsYet": "No ratings yet — be the first",
+    "signInToRate": "Sign in to rate",
     "seeAllReviews": "Ratings & Reviews",
     "seeAllReviewsCount": "Ratings & Reviews ({{count}})",
     "rate": "Rate",

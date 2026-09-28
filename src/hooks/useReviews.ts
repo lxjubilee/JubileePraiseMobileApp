@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { RatingDistribution, ReviewSummary, ReviewTargetType } from '@/types';
 import { reviewsApi, targetKey } from '@/services/reviews';
 import type { ApiError } from '@/services/api';
+import { useAppSelector } from '@/redux';
 import { logger } from '@/utils';
 
 const emptyDistribution = (): RatingDistribution => ({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
@@ -31,13 +32,24 @@ export interface UseReviews {
  * target and keeps it in local state — reviews are server-authoritative, so
  * nothing here is persisted. `applySummary` lets the composer push the fresh
  * summary the upsert/delete endpoints already return, avoiding a refetch.
+ *
+ * Only signed-in users fetch: the API answers a guest's summary request with a
+ * 500, so a guest gets `summary: null` and the widget asks them to sign in.
+ * Signing in (or out) refetches (or clears) automatically.
  */
 export function useReviews(type: ReviewTargetType, id: string | undefined): UseReviews {
+  const authed = useAppSelector((s) => s.auth.user != null);
   const [summary, setSummary] = useState<ReviewSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const reload = useCallback(() => {
+    if (!authed) {
+      setSummary(null);
+      setError(null);
+      setLoading(false);
+      return;
+    }
     if (!id) return;
     let active = true;
     setLoading(true);
@@ -54,7 +66,7 @@ export function useReviews(type: ReviewTargetType, id: string | undefined): UseR
     return () => {
       active = false;
     };
-  }, [type, id]);
+  }, [type, id, authed]);
 
   useEffect(() => reload(), [reload]);
 
@@ -82,14 +94,16 @@ export interface UseSongSummaries {
 /**
  * Batch-loads the rating summaries for a list of songs in one request, keyed by
  * the local `Track.id`. Missing songs (no ratings yet) resolve to a zero-state
- * summary so the per-row control always has something to render.
+ * summary so the per-row control always has something to render. Like
+ * `useReviews`, only signed-in users fetch; a guest gets no summaries.
  */
 export function useSongSummaries(songs: SongSummaryTarget[]): UseSongSummaries {
+  const authed = useAppSelector((s) => s.auth.user != null);
   const idsKey = songs.map((s) => s.targetId).join(',');
   const [summaries, setSummaries] = useState<Record<string, ReviewSummary>>({});
 
   useEffect(() => {
-    if (!songs.length) {
+    if (!authed || !songs.length) {
       setSummaries({});
       return;
     }
@@ -110,7 +124,7 @@ export function useSongSummaries(songs: SongSummaryTarget[]): UseSongSummaries {
     };
     // idsKey captures the set of songs; `songs` identity changes every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idsKey]);
+  }, [idsKey, authed]);
 
   const applyOne = useCallback(
     (localId: string, summary: ReviewSummary) =>
