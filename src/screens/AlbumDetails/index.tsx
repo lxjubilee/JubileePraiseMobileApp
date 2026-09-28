@@ -21,6 +21,7 @@ import {
   useVisibleAlbums,
 } from '@/hooks';
 import { usePlaylistMenu } from '@/components/playlists';
+import { CONFIG } from '@/constants';
 import { shareAlbum } from '@/services/share';
 import { albumUuid, trackSongUuid } from '@/services/playlists';
 import { songLikeKey } from '@/services/likes';
@@ -352,18 +353,24 @@ export const AlbumDetailsScreen: React.FC = () => {
           summary={albumSummary}
           targetId={albumTargetId}
           onApplySummary={applyAlbumSummary}
-          onRate={() =>
-            albumTargetId &&
-            requireAuth('rate') &&
-            setComposer({
-              type: 'album',
-              targetId: albumTargetId,
-              label: album.title,
-              initial: albumSummary?.mine ?? null,
-            })
+          onRate={
+            CONFIG.WRITTEN_REVIEWS
+              ? () =>
+                  albumTargetId &&
+                  requireAuth('rate') &&
+                  setComposer({
+                    type: 'album',
+                    targetId: albumTargetId,
+                    label: album.title,
+                    initial: albumSummary?.mine ?? null,
+                  })
+              : undefined
           }
-          onSeeAll={() =>
-            navigation.navigate('AlbumReviews', { albumId: album.id, albumTitle: album.title })
+          onSeeAll={
+            CONFIG.WRITTEN_REVIEWS
+              ? () =>
+                  navigation.navigate('AlbumReviews', { albumId: album.id, albumTitle: album.title })
+              : undefined
           }
         />
 
@@ -392,15 +399,18 @@ export const AlbumDetailsScreen: React.FC = () => {
                       summary={songSummaries[track.id]}
                       targetId={trackSongUuid(track)!}
                       onApplySummary={(s) => applySongSummary(track.id, s)}
-                      onRate={() =>
-                        requireAuth('rate') &&
-                        setComposer({
-                          type: 'song',
-                          targetId: trackSongUuid(track)!,
-                          localId: track.id,
-                          label: track.title,
-                          initial: songSummaries[track.id]?.mine ?? null,
-                        })
+                      onRate={
+                        CONFIG.WRITTEN_REVIEWS
+                          ? () =>
+                              requireAuth('rate') &&
+                              setComposer({
+                                type: 'song',
+                                targetId: trackSongUuid(track)!,
+                                localId: track.id,
+                                label: track.title,
+                                initial: songSummaries[track.id]?.mine ?? null,
+                              })
+                          : undefined
                       }
                     />
                   ) : null

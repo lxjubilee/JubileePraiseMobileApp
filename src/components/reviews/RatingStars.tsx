@@ -4,12 +4,15 @@ import {
   AccessibilityInfo,
   Animated,
   LayoutChangeEvent,
+  Pressable,
   StyleSheet,
   View,
 } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { AppText } from '@/components/common';
+import { AppText, ConfirmDialog } from '@/components/common';
+import { useTheme } from '@/context';
 import { formatCount } from '@/utils';
 import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { reviewsApi } from '@/services/reviews';
@@ -26,7 +29,9 @@ import { RATING_GOLD, StarRating, starRowMetrics, type StarSize } from './StarRa
  * a readout or an input?" ambiguity.
  *
  * It only handles the star score — written reviews (title/body) still go through
- * `ReviewComposer`, reached via a separate affordance on the host card.
+ * `ReviewComposer`, reached via a separate affordance on the host card. Once the
+ * user has rated, they can remove the rating: a "Remove" link on the full widget,
+ * or an ✕ button (or a long press) on the compact one, plus a screen-reader action.
  */
 
 interface Props {
@@ -99,6 +104,7 @@ export const RatingStars: React.FC<Props> = ({
   compact,
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
   const requireAuth = useRequireAuth();
   const isCompact = compact ?? size === 'sm';
 
@@ -114,6 +120,9 @@ export const RatingStars: React.FC<Props> = ({
   const [preview, setPreview] = useState(0);
   const [committedStars, setCommittedStars] = useState(0);
   const committingRef = useRef(false);
+  const [confirmRemove, setConfirmRemove] = useState(false);
+  const [removing, setRemoving] = useState(false);
+  const [removeError, setRemoveError] = useState<string | null>(null);
 
   const confirmAnim = useRef(new Animated.Value(0)).current;
   const [reduceMotion, setReduceMotion] = useState(false);
@@ -182,6 +191,29 @@ export const RatingStars: React.FC<Props> = ({
       });
   };
 
+  const openRemove = () => {
+    if (!interactive || !summary?.mine || committingRef.current) return;
+    setRemoveError(null);
+    setConfirmRemove(true);
+  };
+
+  // Deletes the caller's whole review record — the server stores the stars and
+  // any written title/body as one row, so a review written on the web goes too
+  // (the dialog mentions it only when the user has one).
+  const remove = () => {
+    if (!targetId) return;
+    setRemoving(true);
+    setRemoveError(null);
+    reviewsApi
+      .remove(type, targetId)
+      .then((res) => {
+        onApplySummary({ ...res.summary, mine: null });
+        setConfirmRemove(false);
+      })
+      .catch(() => setRemoveError(t('reviews.removeError')))
+      .finally(() => setRemoving(false));
+  };
+
   const pan = Gesture.Pan()
     .activeOffsetX([-6, 6])
     .failOffsetY([-8, 8])
@@ -199,7 +231,14 @@ export const RatingStars: React.FC<Props> = ({
     .maxDuration(300)
     .onEnd((e) => commit(starFromX(e.x)));
 
-  const gesture = Gesture.Exclusive(pan, tap);
+  const longPress = Gesture.LongPress()
+    .enabled(!!summary?.mine)
+    .onStart(() => {
+      setPhase('idle');
+      openRemove();
+    });
+
+  const gesture = Gesture.Exclusive(pan, longPress, tap);
 
   // Stars are always rating-gold — the community average as a fractional fill and
   // the user's own rating as whole stars. The readout/input distinction is carried
@@ -217,6 +256,7 @@ export const RatingStars: React.FC<Props> = ({
     const base = mine?.stars ?? Math.round(average ?? 0);
     if (e.nativeEvent.actionName === 'increment') commit(Math.min(5, base + 1));
     else if (e.nativeEvent.actionName === 'decrement') commit(Math.max(1, base - 1));
+    else if (e.nativeEvent.actionName === 'remove') openRemove();
   };
 
   const a11yLabel = rated
@@ -233,11 +273,36 @@ export const RatingStars: React.FC<Props> = ({
       accessibilityRole={interactive ? 'adjustable' : 'image'}
       accessibilityLabel={a11yLabel}
       accessibilityValue={interactive ? { min: 1, max: 5, now: mine?.stars ?? Math.round(average ?? 0) } : undefined}
-      accessibilityActions={interactive ? [{ name: 'increment' }, { name: 'decrement' }] : undefined}
+      accessibilityActions={
+        interactive
+          ? [
+              { name: 'increment' },
+              { name: 'decrement' },
+              ...(mine ? [{ name: 'remove', label: t('reviews.removeRating') }] : []),
+            ]
+          : undefined
+      }
       onAccessibilityAction={interactive ? onAccessibilityAction : undefined}
     >
       <StarRating value={starsValue} size={size} color={starsColor} />
     </View>
+  );
+
+  const removeDialog = (
+    <ConfirmDialog
+      visible={confirmRemove}
+      title={t('reviews.removeTitle')}
+      message={
+        removeError ??
+        (mine?.title || mine?.body ? t('reviews.removeMessageWithReview') : t('reviews.removeMessage'))
+      }
+      confirmLabel={t('reviews.removeRating')}
+      cancelLabel={t('common.cancel')}
+      destructive
+      loading={removing}
+      onConfirm={remove}
+      onCancel={() => setConfirmRemove(false)}
+    />
   );
 
   if (isCompact) {
@@ -247,6 +312,18 @@ export const RatingStars: React.FC<Props> = ({
         <AppText variant="caption" color={showInput ? 'accent' : 'textMuted'} style={styles.compactCount}>
           ({formatCount(count)})
         </AppText>
+        {interactive && rated && phase === 'idle' ? (
+          <Pressable
+            onPress={openRemove}
+            hitSlop={10}
+            style={styles.compactRemove}
+            accessibilityRole="button"
+            accessibilityLabel={t('reviews.removeRating')}
+          >
+            <Ionicons name="close-circle-outline" size={16} color={theme.colors.textMuted} />
+          </Pressable>
+        ) : null}
+        {removeDialog}
       </View>
     );
   }
@@ -285,6 +362,19 @@ export const RatingStars: React.FC<Props> = ({
             <AppText variant="caption" color="textMuted">
               {'  ·  ' + t('reviews.tapToChange')}
             </AppText>
+            {interactive ? (
+              <Pressable
+                onPress={openRemove}
+                hitSlop={8}
+                style={styles.remove}
+                accessibilityRole="button"
+                accessibilityLabel={t('reviews.removeRating')}
+              >
+                <AppText variant="caption" color="textSecondary" style={styles.removeText}>
+                  {t('reviews.remove')}
+                </AppText>
+              </Pressable>
+            ) : null}
           </View>
         ) : null}
       </View>
@@ -302,6 +392,7 @@ export const RatingStars: React.FC<Props> = ({
           {t('reviews.averageSecondary', { avg: average.toFixed(1), count: formatCount(count) })}
         </AppText>
       ) : null}
+      {removeDialog}
     </View>
   );
 };
@@ -309,9 +400,12 @@ export const RatingStars: React.FC<Props> = ({
 const styles = StyleSheet.create({
   compactRow: { flexDirection: 'row', alignItems: 'center' },
   compactCount: { marginLeft: 4 },
+  compactRemove: { marginLeft: 6 },
   mainRow: { flexDirection: 'row', alignItems: 'center', minHeight: 34 },
   readout: { flexDirection: 'row', alignItems: 'center', flex: 1, marginLeft: 12 },
   count: { flex: 1, marginLeft: 10 },
   labelRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
   secondary: { marginTop: 2 },
+  remove: { marginLeft: 'auto', paddingLeft: 12 },
+  removeText: { textDecorationLine: 'underline' },
 });

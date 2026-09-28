@@ -18,7 +18,8 @@ interface Props {
   /** Backend uuid for the song. When absent the stars are display-only. */
   targetId?: string;
   onApplySummary: (s: ReviewSummary) => void;
-  onRate: () => void;
+  /** Opens the composer for a written review. When omitted, the pill is hidden. */
+  onRate?: () => void;
 }
 
 export const SongRatingControl: React.FC<Props> = ({ summary, targetId, onApplySummary, onRate }) => {
@@ -36,21 +37,23 @@ export const SongRatingControl: React.FC<Props> = ({ summary, targetId, onApplyS
         size="sm"
         onApplySummary={onApplySummary}
       />
-      <Pressable
-        onPress={onRate}
-        hitSlop={8}
-        style={[
-          styles.rate,
-          {
-            borderColor: rated ? theme.colors.accent : theme.colors.border,
-            borderRadius: theme.radius.pill,
-          },
-        ]}
-      >
-        <AppText variant="caption" color={rated ? 'accent' : 'textSecondary'}>
-          {rated ? t('reviews.editReview') : t('reviews.writeReview')}
-        </AppText>
-      </Pressable>
+      {onRate ? (
+        <Pressable
+          onPress={onRate}
+          hitSlop={8}
+          style={[
+            styles.rate,
+            {
+              borderColor: rated ? theme.colors.accent : theme.colors.border,
+              borderRadius: theme.radius.pill,
+            },
+          ]}
+        >
+          <AppText variant="caption" color={rated ? 'accent' : 'textSecondary'}>
+            {rated ? t('reviews.editReview') : t('reviews.writeReview')}
+          </AppText>
+        </Pressable>
+      ) : null}
     </View>
   );
 };

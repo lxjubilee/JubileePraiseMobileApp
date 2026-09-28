@@ -18,6 +18,12 @@ export const CONFIG = {
    * in app.json `extra` to bring it back.
    */
   APP_UPDATE_PROMPT: ENV.APP_UPDATE_PROMPT,
+  /**
+   * Written reviews (the composer and other users' review text). Off until the
+   * app has Report/Block plus server-side moderation (App Review Guideline 1.2);
+   * star ratings stay on because an aggregate score isn't user-generated content.
+   */
+  WRITTEN_REVIEWS: false,
   /** Cloudflare Turnstile site key for the sign-in CAPTCHA (empty = disabled). */
   TURNSTILE_SITE_KEY: ENV.TURNSTILE_SITE_KEY,
   /** Origin the Turnstile widget runs under (allow-listed for the site key). */
